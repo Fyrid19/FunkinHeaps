@@ -30,9 +30,6 @@ class ConductorTestState extends HeapsState
     
     override public function create():Void
     {        
-        var tf = new Text(hxd.res.DefaultFont.get(), this);
-        tf.text = "Hello Hashlink !";
-
         conductorData = new Text(hxd.res.DefaultFont.get(), this);
         conductorData.text = "s";
         conductorData.x = 20;
