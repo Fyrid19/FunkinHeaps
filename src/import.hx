@@ -7,4 +7,4 @@ import h2d.Scene;
 import hxd.Math;
 import hxd.Res;
 
-import backend.assets.Paths;
+import funkin.backend.assets.Paths;

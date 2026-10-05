@@ -1,5 +1,6 @@
-package backend.music;
+package funkin.backend.music;
 
+import engine.backend.Signal;
 import hxd.snd.Channel;
 
 class Conductor extends Object {

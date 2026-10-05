@@ -1,11 +1,15 @@
+-D resourcesPath=assets
+
+-D windowTitle=FunkinHeaps
+-D windowSize=1280x720
+
 -cp src
+
 -lib heaps
 -lib format
 -lib hlsdl
 -lib hlopenal
+
 -hl hello.hl
 
 -main Main
-
--D windowTitle=heaps testing
--D windowSize=1280x720

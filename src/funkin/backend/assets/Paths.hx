@@ -1,4 +1,4 @@
-package backend.assets;
+package funkin.backend.assets;
 
 import hxd.res.Image;
 import hxd.res.Sound;
