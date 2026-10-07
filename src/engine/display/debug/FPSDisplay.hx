@@ -12,7 +12,7 @@ class FPSDisplay extends h2d.Object
         super(parent);
         this.setPosition(x, y);
 
-        fpsText = new h2d.Text(hxd.Res.fonts.vcr.toFont(), this);
+        fpsText = new h2d.Text(hxd.Res.fonts.vcr_fnt.toFont(), this);
         fpsText.scale(1);
         fpsText.text = 'FPS: ${hxd.Timer.fps}';
     }

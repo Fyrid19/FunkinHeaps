@@ -1,5 +1,7 @@
 package funkin.backend.assets;
 
+import hxd.fs.FileSystem;
+import hxd.res.Font;
 import hxd.res.Image;
 import hxd.res.Sound;
 import hxd.snd.Channel;
@@ -9,7 +11,11 @@ class Paths {
     public static var soundCache:Map<String, Sound> = new Map();
 
     public static function getPath(key:String, ?folder:String):String {
-        return (folder != null ? folder + "/" : "") + key;
+        var path = (folder != null ? folder + "/" : "") + key;
+        if (sys.FileSystem.exists(path))
+            trace('file there');
+
+        return path;
     }
 
     public static function image(key:String, ?ext:String = "png", ?folder:String = null):Image {
@@ -74,6 +80,13 @@ class Paths {
         var path = getPath('$key.xml', folder);
         var data = Res.load(path).toText();
         return haxe.xml.Parser.parse(data);
+    }
+
+    // i don't know what im doing help - kaylee
+    public static function font(key:String, ?ext:String = 'ttf', ?folder:String = null) {
+        var path = getPath('fonts/$key.$ext', folder);
+        var data = Res.load(path);
+        // return data;
     }
     
     // little thing so its less annoying

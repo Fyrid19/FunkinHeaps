@@ -29,7 +29,7 @@ class RAMDisplay extends Object
         super(parent);
         this.setPosition(x, y);
 
-        gcRamText = new Text(hxd.Res.fonts.vcr.toFont(), this);
+        gcRamText = new Text(hxd.Res.fonts.vcr_fnt.toFont(), this);
         gcRamText.scale(0.6);
         gcRamText.text = "GC [0MB / 0MB]";
     }
