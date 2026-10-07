@@ -7,4 +7,8 @@ import h2d.Scene;
 import hxd.Math;
 import hxd.Res;
 
+import engine.game.state.HeapsState;
+import engine.game.state.HeapsStateManager;
+import engine.display.sprite.Sprite;
+
 import funkin.backend.assets.Paths;

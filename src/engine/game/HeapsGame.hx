@@ -1,7 +1,5 @@
 package engine.game;
 
-import engine.game.state.*;
-
 class HeapsGame extends h2d.Scene
 {        
     //TEMPORARY PROBABLY I DONT LIKE THIS LOLL

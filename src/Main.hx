@@ -12,7 +12,7 @@ class Main extends hxd.App {
         Res.initEmbed();
         Res.initLocal();
 
-        heapsGame = new HeapsGame(funkin.test.ConductorTestState, s3d);
+        heapsGame = new HeapsGame(funkin.test.SparrowTestState, s3d);
         setScene(heapsGame);
         
         debugDisplay = new DebugDisplay(15, 15, s2d);

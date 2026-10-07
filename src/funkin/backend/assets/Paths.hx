@@ -66,7 +66,18 @@ class Paths {
 
     public static function json(key:String, ?folder:String = null):Dynamic {
         var path = getPath('$key.json', folder);
-        var jsonData = Res.load(path).toText();
-        return haxe.Json.parse(jsonData);
+        var data = Res.load(path).toText();
+        return haxe.Json.parse(data);
+    }
+    
+    public static function xml(key:String, ?folder:String = null):Dynamic {
+        var path = getPath('$key.xml', folder);
+        var data = Res.load(path).toText();
+        return haxe.xml.Parser.parse(data);
+    }
+    
+    // little thing so its less annoying
+    public static function sparrow(img:hxd.res.Image, ?folder:String = null):Dynamic {
+        return Paths.xml(StringTools.replace(img.entry.path, ".png", ""), folder);
     }
 }

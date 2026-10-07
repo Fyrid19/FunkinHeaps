@@ -1,13 +1,9 @@
 package funkin.test;
 
-import engine.game.state.HeapsStateManager;
-import engine.game.state.HeapsState;
 import engine.backend.Signal;
 
 class ConductorTestState extends HeapsState
 {    
-    var time : Float = 0.;
-
     var song:hxd.snd.Channel;
     var metronome:hxd.res.Sound;
     var songTime:Text;
