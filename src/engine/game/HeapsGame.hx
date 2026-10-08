@@ -8,10 +8,11 @@ class HeapsGame extends h2d.Scene
     public function new(s3d:h3d.scene.Scene)
     {
         super();
+                
         this.s3d = s3d;
     }
     
     public function update(dt:Float) {
-        // HeapsStateManager.update(dt);
+        HeapsStateManager.update(dt);
     }    
 }

@@ -26,6 +26,8 @@ class ConductorTestState extends HeapsState
     
     override public function create():Void
     {        
+        var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x00FF00, hxd.Window.getInstance().width, hxd.Window.getInstance().height), this);
+        
         conductorData = new Text(hxd.res.DefaultFont.get(), this);
         conductorData.text = "s";
         conductorData.x = 20;
