@@ -5,6 +5,7 @@ typedef AnimEntry = {
     var frames:Array<h2d.Tile>;
     var fps:Int;
     var looped:Bool;
+    var extra:Map<String,Dynamic>; // incase animation implementations need extra data
 }
 
 class SpriteAnimation

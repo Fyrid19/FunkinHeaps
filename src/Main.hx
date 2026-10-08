@@ -7,7 +7,7 @@ import engine.game.HeapsGame;
 class Main extends hxd.App {
     public var debugDisplay:DebugDisplay; // for things like fps and memory and such
 
-    public var initialState = funkin.test.ConductorTestState; // state that the game starts on
+    public var initialState = funkin.test.SparrowTestState; // state that the game starts on
 
     override function init() {
         Res.initEmbed();
