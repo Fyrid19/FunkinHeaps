@@ -10,5 +10,6 @@ import hxd.Res;
 import engine.game.state.HeapsState;
 import engine.game.state.HeapsStateManager;
 import engine.display.sprite.Sprite;
+import engine.backend.util.DiscordUtil;
 
 import funkin.backend.assets.Paths;

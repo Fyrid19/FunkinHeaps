@@ -16,19 +16,22 @@ class Main extends hxd.App {
         HeapsStateManager.game = new HeapsGame(s3d);
         HeapsStateManager.setState(initialState);
         setScene(HeapsStateManager.game);
+
+        // DiscordUtil.init();
         
         debugDisplay = new DebugDisplay(6, 4, s2d);
     }
 
     override function update(dt:Float) {        
         HeapsStateManager.game.update(dt);
-        // HeapsStateManager.update(dt); // don't know if putting this here would be better // its in heapsGame because it makes main look nicer and heapsGame is meant to be the root Game class thing
         super.update(dt);
     }
     
     override function dispose()
     {
+        trace('dipose');
         HeapsStateManager.game.dispose();
+        // DiscordUtil.shutdown();
         super.dispose();
     }
 
