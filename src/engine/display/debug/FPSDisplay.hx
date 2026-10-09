@@ -17,7 +17,7 @@ class FPSDisplay extends h2d.Object
         fpsText.text = 'FPS: ${hxd.Timer.fps}';
     }
     
-    // yeah this is weird i cant lie
+    // yeah this is weird i cant lie - ev
 	override function sync(ctx:h2d.RenderContext)
     {
         accuTime += hxd.Timer.elapsedTime;

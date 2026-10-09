@@ -15,7 +15,7 @@ class SparrowTestState extends HeapsState
         sparrow = new Sprite();
         sparrow.setScale(0.9);
         sparrow.x = 50;
-        sparrow.loadSparrowAtlas(Paths.image("characters/DADDY_DEAREST"));
+        sparrow.loadSparrow(Paths.image("characters/DADDY_DEAREST"));
         addChild(sparrow);
         
         sparrow.animation.addByPrefix("idle", "Dad idle dance", 24, true);
@@ -24,7 +24,7 @@ class SparrowTestState extends HeapsState
         sparrow2 = new Sprite();
         sparrow2.setScale(1);
         sparrow2.x = 400;
-        sparrow2.loadSparrowAtlas(Paths.image("characters/spooky_dark"));
+        sparrow2.loadSparrow(Paths.image("characters/spooky_dark"));
         addChild(sparrow2);
         
         sparrow2.animation.addByPrefix("idle", "spooky dance idle", 24, true);

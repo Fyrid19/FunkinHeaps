@@ -73,6 +73,12 @@ class Paths {
     public static function json(key:String, ?folder:String = null):Dynamic {
         var path = getPath('$key.json', folder);
         var data = Res.load(path).toText();
+        
+        // so it can parse jsons encoded in UTF-8 with BOM - ev
+        if (data.charCodeAt(0) == 65279) {
+            data = data.substr(1);
+        }
+        
         return haxe.Json.parse(data);
     }
     
@@ -83,14 +89,17 @@ class Paths {
     }
 
     // i don't know what im doing help - kaylee
-    public static function font(key:String, ?ext:String = 'ttf', ?folder:String = null) {
+    public static function font(key:String, ?ext:String = 'ttf' /* ttf stands for transdimensional telephone format btw - ev*/, ?folder:String = null) {
         var path = getPath('fonts/$key.$ext', folder);
         var data = Res.load(path);
         // return data;
     }
     
-    // little thing so its less annoying
+    // little thing so its less annoying - ev
     public static function sparrow(img:hxd.res.Image, ?folder:String = null):Dynamic {
         return Paths.xml(StringTools.replace(img.entry.path, ".png", ""), folder);
+    }
+    public static function animate(name:String, ?folder:String = null):Dynamic {
+        return Paths.json('images/$name/spritemap1', folder);
     }
 }

@@ -3,6 +3,7 @@ package engine.display.sprite;
 import h2d.Bitmap;
 
 import engine.display.sprite.animation.*;
+import engine.display.sprite.animation.animate.*;
 
 class Sprite extends h2d.Object {
     public var animation:Dynamic = new SpriteAnimation();
@@ -14,13 +15,20 @@ class Sprite extends h2d.Object {
         super();
     }
     
-    public function loadSparrowAtlas(img:hxd.res.Image) {
+    public function loadSparrow(img:hxd.res.Image) {
         animation = new SparrowAnimation();
         animation.parent = this;
         
         animation.loadAtlas(img);
         
         //bitmap = new h2d.Bitmap(animation.frames[1]); // temp
+    }
+    
+    public function loadAnimate(path:String) {
+        animation = new AnimateAnimation();
+        animation.parent = this;
+        
+        animation.loadSpritemap(path);
     }
     
     public function updateAnim() {
@@ -36,7 +44,7 @@ class Sprite extends h2d.Object {
     }
         
 
-    // we cant add the bitmap in the constructor, so we add it when it actually gets changed
+    // we cant add the bitmap in the constructor, so we add it when it actually gets changed - ev
     function set_bitmap(value:Bitmap):Bitmap {
         bitmap = value;
         
