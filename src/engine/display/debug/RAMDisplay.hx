@@ -49,8 +49,8 @@ class RAMDisplay extends Object
             gcMemFormatted = formatMemoryUse(stats.currentMemory);
             gcPeakMemFormatted = formatMemoryUse(gcPeakMem);
 
-            // i wanna use • as the divider after i add the font lol
-            // i have to do a thingy to get task manager memory and i dont wanna do that rn so we just have gc memory
+            // i wanna use • as the divider after i add the font lol - ev
+            // i have to do a thingy to get task manager memory and i dont wanna do that rn so we just have gc memory - ev
             gcRamText.text = 'GC - [${gcMemFormatted} / ${gcPeakMemFormatted}]';
             
             syncTime = 0;
@@ -66,7 +66,7 @@ class RAMDisplay extends Object
         
         var suffix:String = "MB";
         
-        if (memMB >= 1000 * 1000) {  // WHAT THE FUCK ARE YOU DOING TO REACH THIS MUCH USAGE
+        if (memMB >= 1000 * 1000) {  // WHAT THE FUCK ARE YOU DOING TO REACH THIS MUCH USAGE - ev
             memMB /= 1000 * 1000;
             suffix = "TB";
         } else if (memMB >= 1000) {

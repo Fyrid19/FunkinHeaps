@@ -5,7 +5,7 @@ class DebugDisplay extends h2d.Object
     var fpsDisplay:FPSDisplay;
     var ramDisplay:RAMDisplay;
     
-    // GOD I LOVE OBJECT ORIENTED PROGRAMMING RAHHH
+    // GOD I LOVE OBJECT ORIENTED PROGRAMMING RAHHH - ev
     public function new(x:Float = 0, y:Float = 0, parent:h2d.Object)
     {
         super(parent);

@@ -7,7 +7,7 @@ import engine.game.HeapsGame;
 class Main extends hxd.App {
     public var debugDisplay:DebugDisplay; // for things like fps and memory and such
 
-    public var initialState = funkin.test.SparrowTestState; // state that the game starts on
+    public var initialState = funkin.test.AnimateTestState; // state that the game starts on
 
     override function init() {
         Res.initEmbed();
@@ -22,7 +22,7 @@ class Main extends hxd.App {
 
     override function update(dt:Float) {        
         HeapsStateManager.game.update(dt);
-        // HeapsStateManager.update(dt); // don't know if putting this here would be better // its in heapsGame because it makes main look nicer and heapsGame is meant to be the root Game class thing
+        // HeapsStateManager.update(dt); // don't know if putting this here would be better - kaylee // its in heapsGame because it makes main look nicer and heapsGame is meant to be the root Game class thing - ev
         super.update(dt);
     }
     
