@@ -25,8 +25,9 @@ class ConductorTestState extends HeapsState
     
     
     override public function create():Void
-    {        
-        var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x00FF00, hxd.Window.getInstance().width, hxd.Window.getInstance().height), this);
+    {   
+        // bro the neon green actually burns my eyes at night :broken_heart:     
+        var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x0067C7, hxd.Window.getInstance().width, hxd.Window.getInstance().height), this);
         
         conductorData = new Text(hxd.res.DefaultFont.get(), this);
         conductorData.text = "s";
@@ -90,6 +91,10 @@ class ConductorTestState extends HeapsState
 
         if (conductor != null) {
             conductorData.text = 'Offset: ${conductor.songOffset}';
+        }
+
+        if (controls.MENU_UP.P) {
+            trace('input');
         }
     }
 }

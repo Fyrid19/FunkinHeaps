@@ -1,7 +1,11 @@
 package engine.game.state;
 
+import engine.backend.input.InputController;
+
 class HeapsState extends h2d.Scene implements IHeapsState
 {
+    public var controls:InputController = new InputController();
+    
     public function new():Void
     {        
         super();
