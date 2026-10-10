@@ -1,54 +1,28 @@
 package engine.display.sprite.animation.animate;
 
-import h3d.Matrix;
 import h2d.Tile;
 import h2d.SpriteBatch;
-import h2d.SpriteBatch.BatchElement;
 
 class AnimateSpritemapSprite
 {
-    public var x:Int = 0;
-    public var y:Int = 0;
-    public var width:Int = 0;
-    public var height:Int = 0;
+    public var x:Float = 0;
+    public var y:Float = 0;
+    public var width:Float = 0;
+    public var height:Float = 0;
     public var rotated:Bool = false;
+    public var tile:h2d.Tile;
 
-    public function new(x:Int, y:Int, width:Int, height:Int, rotated:Bool) {
+    public function new(x:Float, y:Float, width:Float, height:Float, rotated:Bool, tile:h2d.Tile) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         this.rotated = rotated;
-        
+        this.tile = tile;
+                  
+        this.tile.setPosition(this.x, this.y);
+        this.tile.setSize(this.width, this.height);
     }
-}
-
-typedef AnimateDecomposedMatrix = {
-    public var position:Matrix; // T
-    public var rotation:Matrix; // R
-    public var scaling:Matrix; // S
-
-}
-typedef AnimateTimelineElement = {
-    public var name:String;
-    public var matrix:AnimateDecomposedMatrix;
-}
-
-typedef AnimateTimelineFrame = {
-    public var ?name:String;
-    public var index:Int;
-    public var duration:Int;
-    public var elements:Array<AnimateTimelineElement>;
-}
-
-typedef AnimateLayer = {
-    public var name:String;
-    public var frames:Array<AnimateTimelineFrame>;
-};
-
-typedef AnimateTimeline = {
-    public var framerate:Int;
-    public var layers:Array<AnimateLayer>;
 }
 
 class AnimateAnimation extends SpriteAnimation
@@ -57,25 +31,20 @@ class AnimateAnimation extends SpriteAnimation
         super(ANIMATE);
     }
     
-    var smSprites:Map<String, AnimateSpritemapSprite>;
-    var smAtlas:hxd.res.Image;
+    public var smSprites:Map<String, AnimateSpritemapSprite>;
+    public var smAtlas:hxd.res.Image;
     
     var animTimeline:AnimateTimeline;
-    
-    var _optimizedAnimJson:Bool = false;
-    
+            
     public function loadSpritemap(path:String) {
         //spritemap stuff
-        var smJson = Paths.animate(path);
-
-        final atlas = smJson.ATLAS;
-        final sprites = atlas.SPRITES;
-        final meta = smJson.meta;
-
-        var atlasName = StringTools.replace(meta.image, ".png", "");
+        var smJson:AnimateJson.SpritemapJson = Paths.animate(path);
+        final sprites = smJson.ATLAS.SPRITES;
+        
+        var atlasName = StringTools.replace(smJson.meta.image, ".png", "");
                 
         smAtlas = Paths.image('$path/$atlasName');
-        
+                
         parent.sBatch = new SpriteBatch(smAtlas.toTile(), parent);
         parent.sBatch.hasRotationScale = true;
         
@@ -84,105 +53,71 @@ class AnimateAnimation extends SpriteAnimation
         for (i in 0...sprites.length) {
             var sprite = sprites[i].SPRITE;
             
-            var animSpr:AnimateSpritemapSprite = new AnimateSpritemapSprite(sprite.x, sprite.y, sprite.w, sprite.h, sprite.rotated);
+            var animSpr:AnimateSpritemapSprite = new AnimateSpritemapSprite(sprite.x, sprite.y, sprite.w, sprite.h, sprite.rotated, smAtlas.toTile());
             smSprites.set(sprite.name, animSpr);
         }
         
-        // animation stuff
-        final animJson = Paths.json('images/$path/Animation');
-        checkIfOptimized(animJson);
-        
-        final animation = animJson.ANIMATION;
-        
-        final flaName = animation.name;
-        final symbolName =  animation.SYMBOL_name;
-        
-        final animFramerate = animJson.metadata.framerate;
-        
-        final timeline = animation.TIMELINE;
-
-        final layers = timeline.LAYERS;
-        
-        var animLayers:Array<AnimateLayer> = new Array<AnimateLayer>();
-        
-        for (i in 0...layers.length) {
-            final layer = layers[i];
-            final layerName = layer.Layer_name;
-                        
-            final frames = layer.Frames;
-            var layerFrames:Array<AnimateTimelineFrame> = new Array<AnimateTimelineFrame>();
-            
-            for (j in 0...frames.length) {
-                final frame = frames[j];
-                
-                final frameName:String = frame.name;
-                final frameIdx:Int = frame.index;
-                final frameDur:Int = frame.duration;
-
-                final elements = frame.elements;
-                
-                var animElements:Array<AnimateTimelineElement> = new Array<AnimateTimelineElement>();
-                
-                for (k in 0...elements.length) {
-                    final element = elements[k];
-                    
-                    final atlasSprInst = element.ATLAS_SPRITE_instance;
-                    
-                    final atlasSprName = atlasSprInst.name;
-                    
-                    final decompMatrix = atlasSprInst.DecomposedMatrix;
-                    final pos = decompMatrix.Position;
-                    final rot = decompMatrix.Rotation;
-                    final scale = decompMatrix.Scaling;
-                    
-                    animElements.push({name: atlasSprName, matrix: {
-                        position: Matrix.T(pos.x, pos.y, pos.z),
-                        rotation: Matrix.R(rot.x, rot.y, rot.z),
-                        scaling: Matrix.S(scale.x, scale.y, scale.z)
-                    }});
-                }
-                var animFrame:AnimateTimelineFrame = {index: frameIdx, duration: frameDur, elements: animElements};
-                if (frameName != null) animFrame.name = frameName;
-                layerFrames.push(animFrame);
-            }
-                        
-            animLayers.push({name: layerName, frames: layerFrames});
-        }
-                
-        animTimeline = {framerate: animFramerate, layers: animLayers};
-        
-        playAnim("Schmoove");
+        loadAnimJson(path);
     }
     
-    public function playAnim(name:String) {
+    var timeline:AnimateTimeline;
+    
+    function loadAnimJson(path:String) {
+        var animJson:AnimateJson.AnimationJson = Paths.json('images/$path/Animation');
+        
+        timeline = new AnimateTimeline(animJson.AN.TL, this);
+        
+    }
+    
+    // for readability sake - ev
+    private function setMatrix2D(matrix:h2d.col.Matrix, eM:Array<Float>) {  
+        matrix.a = eM[0];
+        matrix.b = eM[1];
+        matrix.c = eM[2];
+        matrix.d = eM[3];
+        matrix.x = eM[4];
+        matrix.y = eM[5];
+    }
+    
+    private function parseMatrix3D(e:Dynamic):Array<Float> {
+        var pM:Array<Float> = new Array<Float>();
+        
+        for (m in Reflect.fields(e.Matrix3D)) {
+            pM.push(Reflect.field(e.Matrix3D, m));
+        }
+
+        return pM;
+    }
+    
+
+    public function playAnim(name:String, ?forced:Bool = false, ?reversed:Bool = false) {
+        if (!forced && !playing) return;
+        
         curAnim = name;
         curFrame = 0;
         
         var duration:Int = 0;
         
-        for (layer in animTimeline.layers) {
-            for (frame in layer.frames) {
-                for (element in frame.elements) {
-                    var smSprElem:BatchElement = new BatchElement(smAtlas.toTile());
-                    smSprElem.t.setPosition(smSprites[element.name].x, smSprites[element.name].y);
-                    smSprElem.t.setSize(smSprites[element.name].width, smSprites[element.name].height);
-                    smSprElem.x = element.matrix.position.getPosition().x;
-                    smSprElem.y = element.matrix.position.getPosition().y;
-                    smSprElem.scaleX = element.matrix.scaling.getScale().x;
-                    smSprElem.scaleY = element.matrix.scaling.getScale().y;
-                    smSprElem.rotation = Math.degToRad(element.matrix.rotation.getDirection().z);
-
-                    parent.sBatch.add(smSprElem);
-                }
+        frameTime = 1 / anims.get(curAnim).fps;
+    }
+    
+    override public function update(dt:Float) {
+        super.update(dt);
+        
+        if (!playing) return;
+        
+        while (et >= frameTime) {            
+            et -= frameTime;
+            curFrame++;
+        }
+        
+        if (curFrame >= anims[curAnim].frames.length) {
+            if (anims[curAnim].looped) {
+                curFrame = 0;
+            } else {
+                playing = false;
+                return;
             }
         }
     }
-    
-    function checkIfOptimized(json:Dynamic) {
-        _optimizedAnimJson = json.AN != null ? true : false;
-    }
-    override public function update(dt:Float) {
-        super.update(dt);
-    }
-
 }

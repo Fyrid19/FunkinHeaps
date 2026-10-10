@@ -75,7 +75,7 @@ class Paths {
         var data = Res.load(path).toText();
         
         // so it can parse jsons encoded in UTF-8 with BOM - ev
-        if (data.charCodeAt(0) == 65279) {
+        if (data.charCodeAt(0) == 0xFEFF) {
             data = data.substr(1);
         }
         

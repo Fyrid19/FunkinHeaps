@@ -16,6 +16,9 @@ class AnimateTestState extends HeapsState
         spr.x = 50;
         spr.loadAnimate("test/Untitled-2");
         addChild(spr);
+        
+       // spr.animation.addByLabel("moving", "Schmoove", 24, true));
+     //   spr.animation.playAnim("moving", true, false);
     }
     
     
