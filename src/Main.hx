@@ -1,5 +1,6 @@
 package;
 
+import engine.backend.util.ColorUtil;
 import engine.backend.input.InputController;
 import engine.backend.Signal;
 import engine.display.debug.DebugDisplay;
@@ -8,7 +9,7 @@ import engine.game.HeapsGame;
 class Main extends hxd.App {
     public var debugDisplay:DebugDisplay; // for things like fps and memory and such
 
-    public var initialState = funkin.test.ConductorTestState; // state that the game starts on
+    public var initialState = funkin.menus.MainMenuState; // state that the game starts on
 
     override function init() {
         Res.initEmbed();
@@ -17,7 +18,7 @@ class Main extends hxd.App {
         HeapsStateManager.game = new HeapsGame(s3d);
         HeapsStateManager.setState(initialState);
         setScene(HeapsStateManager.game);
-
+        
         // DiscordUtil.init();
         
         debugDisplay = new DebugDisplay(6, 4, s2d);

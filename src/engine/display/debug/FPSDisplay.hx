@@ -12,9 +12,9 @@ class FPSDisplay extends h2d.Object
         super(parent);
         this.setPosition(x, y);
 
-        fpsText = new h2d.Text(hxd.Res.fonts.vcr_fnt.toFont(), this);
-        fpsText.scale(1);
+        fpsText = new h2d.Text(Paths.font('vcr', 20), this);
         fpsText.text = 'FPS: ${hxd.Timer.fps}';
+        fpsText.color = new h3d.Vector4(1, 1, 1, 1);
     }
     
     // yeah this is weird i cant lie - ev

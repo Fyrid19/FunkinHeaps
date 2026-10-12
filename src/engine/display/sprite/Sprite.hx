@@ -37,12 +37,23 @@ class Sprite extends h2d.Object {
     
     static public function fromBitmap(bitmap:h2d.Bitmap):Sprite {
         var sprite = new Sprite();
-        
         sprite.bitmap = bitmap;
-        
         return sprite;
     }
-        
+    
+    static public function fromImage(image:hxd.res.Image):Sprite {
+        var sprite = new Sprite();
+        var tile = image.toTile();
+        sprite.bitmap = new h2d.Bitmap(tile);
+        return sprite;
+    }
+
+    static public function simpleBitmap(x:Float, y:Float, width:Int, height:Int, color:Int, alpha:Float, ?parent:h2d.Object):Bitmap {
+        var bmp:h2d.Bitmap = new h2d.Bitmap(h2d.Tile.fromColor(color, width, height, alpha), parent);
+        bmp.x = x;
+        bmp.y = y;
+        return bmp;
+    }
 
     // we cant add the bitmap in the constructor, so we add it when it actually gets changed - ev
     function set_bitmap(value:Bitmap):Bitmap {

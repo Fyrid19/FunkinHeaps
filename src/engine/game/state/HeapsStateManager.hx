@@ -32,6 +32,7 @@ class HeapsStateManager
             }
         }
     }
+
     static public function destroy()
     {
         for (i in 0...game.numChildren)

@@ -3,7 +3,9 @@ package funkin.backend.music;
 import engine.backend.Signal;
 import hxd.snd.Channel;
 
-class Conductor extends Object {
+class Conductor {
+    public static var instance:Conductor = new Conductor();
+
     public var targetSong:Channel;
 
     public var bpm(default, set):Float;
@@ -49,8 +51,6 @@ class Conductor extends Object {
     public var onBpmChange:Signal = new Signal();
 
     public function new(?initialBpm:Float = 120, ?song:Channel) {
-        super();
-
         this.bpm = initialBpm;
         this.targetSong = song;
         this.songPosition = 0;
@@ -69,12 +69,12 @@ class Conductor extends Object {
         songPosition += songOffset;
 
         if (targetSong != null) {
-            songPosition = Math.min(targetSong.position, targetSong.duration);
+            songPosition = Math.min(targetSong.position, targetSong.duration) * 1000;
             songLength = targetSong.duration;
-            songPosition = Math.clamp(songPosition, 0, songLength);
+            songPosition = Math.clamp(songPosition, 0, songLength * 1000);
         }
         
-        stepFloat = songPosition / stepCrochet;
+        stepFloat = (songPosition / 1000) / stepCrochet;
         beatFloat = stepFloat / stepsPerBeat;
         measureFloat = beatFloat / beatsPerMeasure;
 
@@ -98,5 +98,13 @@ class Conductor extends Object {
         curStep = Math.floor(songPosition / stepCrochet);
         curBeat = Math.floor(songPosition / crochet);
         curMeasure = Math.floor(songPosition / measureCrochet);
+    }
+
+    public function setSong(song:Channel, bpm:Float, ?autoPlay:Bool = true) {
+        this.targetSong = song;
+        this.bpm = bpm;
+        this.targetSong.pause = !autoPlay;
+
+        trace('Conductor song changed with BPM $bpm');
     }
 }

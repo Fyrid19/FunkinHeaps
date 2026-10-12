@@ -12,4 +12,5 @@ import engine.game.state.HeapsStateManager;
 import engine.display.sprite.Sprite;
 import engine.backend.util.DiscordUtil;
 
+import funkin.backend.music.Conductor;
 import funkin.backend.assets.Paths;

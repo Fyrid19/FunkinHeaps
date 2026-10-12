@@ -11,18 +11,9 @@ class HeapsState extends h2d.Scene implements IHeapsState
         super();
     }
     
-    public function create():Void
-    {
-
-    }
+    public function create():Void {}
     
-    public function update(dt:Float):Void
-    {
-
-    }
+    public function update(dt:Float):Void {}
     
-    public function destroy():Void
-    {
-
-    }
+    public function destroy():Void {}
 }

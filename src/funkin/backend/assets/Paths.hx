@@ -1,25 +1,29 @@
 package funkin.backend.assets;
 
-import hxd.fs.FileSystem;
+import hxd.res.BitmapFont;
+import sys.FileSystem;
+
 import hxd.res.Font;
 import hxd.res.Image;
 import hxd.res.Sound;
 import hxd.snd.Channel;
 
 class Paths {
-    public static var imageCache:Map<String, Image> = new Map();
-    public static var soundCache:Map<String, Sound> = new Map();
+    static var imageCache:Map<String, Image> = new Map();
+    static var soundCache:Map<String, Sound> = new Map();
 
     public static function getPath(key:String, ?folder:String):String {
-        var path = (folder != null ? folder + "/" : "") + key;
-        if (sys.FileSystem.exists(path))
-            trace('file there');
-
-        return path;
+        return (folder != null ? folder + "/" : "") + key;
     }
 
     public static function image(key:String, ?ext:String = "png", ?folder:String = null):Image {
         var path = getPath('images/$key.$ext', folder);
+
+        // fallback image to prevent crashes
+        if (!FileSystem.exists('assets/$path')) {
+            trace('File ($path) not found!');
+            return Res.images.hxlogo;
+        }
 
         if (!imageCache.exists(path))
             imageCache.set(path, Res.load(path).toImage());
@@ -29,6 +33,12 @@ class Paths {
 
     public static function music(key:String, ?ext:String = "ogg", ?folder:String = null):Channel {
         var path = getPath('music/$key.$ext', folder);
+        
+        // fallback sound to prevent crashes
+        if (!FileSystem.exists('assets/$path')) {
+            trace('File ($path) not found!');
+            return Res.sounds.metronome.play();
+        }
 
         if (!soundCache.exists(path)) 
             soundCache.set(path, Res.load(path).toSound());
@@ -40,6 +50,12 @@ class Paths {
 
     public static function sound(key:String, ?ext:String = "ogg", ?folder:String = null):Sound {
         var path = getPath('sounds/$key.$ext', folder);
+
+        // fallback sound to prevent crashes
+        if (!FileSystem.exists('assets/$path')) {
+            trace('File ($path) not found!');
+            return Res.sounds.metronome;
+        }
 
         if (!soundCache.exists(path)) 
             soundCache.set(path, Res.load(path).toSound());
@@ -88,11 +104,17 @@ class Paths {
         return haxe.xml.Parser.parse(data);
     }
 
-    // i don't know what im doing help - kaylee
-    public static function font(key:String, ?ext:String = 'ttf' /* ttf stands for transdimensional telephone format btw - ev*/, ?folder:String = null) {
-        var path = getPath('fonts/$key.$ext', folder);
-        var data = Res.load(path);
-        // return data;
+    // based off of DefaultFont - kaylee
+    public static function font(font:String, ?size:Int = 24, ?folder:String = null):h2d.Font {
+        var path = getPath('fonts/$font', folder);
+        var bytes = Res.load('$path/$font.png');
+        var desc = Res.load('$path/$font.fnt');
+        var bmp = new BitmapFont(desc.entry);
+        @:privateAccess bmp.loader = bytes.loader;
+
+        var fnt = bmp.toFont();
+        fnt.resizeTo(size);
+        return fnt;
     }
     
     // little thing so its less annoying - ev
