@@ -3,6 +3,8 @@
 -D windowTitle=FunkinHeaps
 -D windowSize=1280x720
 
+#-D windowFixed=1 
+
 -cp src
 
 -lib heaps

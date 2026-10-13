@@ -14,3 +14,5 @@ import engine.backend.util.DiscordUtil;
 
 import funkin.backend.music.Conductor;
 import funkin.backend.assets.Paths;
+
+import Main.TraceType; // i wish i didn't have to do this but idrk

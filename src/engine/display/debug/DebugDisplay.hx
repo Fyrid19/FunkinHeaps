@@ -2,7 +2,7 @@ package engine.display.debug;
 
 import h2d.Bitmap;
 
-class DebugDisplay extends h2d.Object
+class DebugDisplay extends Object
 {
     var back:Bitmap;
     var back2:Bitmap;
@@ -11,7 +11,7 @@ class DebugDisplay extends h2d.Object
     var outline:Int = 2;
     
     // GOD I LOVE OBJECT ORIENTED PROGRAMMING RAHHH - ev
-    public function new(x:Float = 0, y:Float = 0, parent:h2d.Object)
+    public function new(x:Float = 0, y:Float = 0, parent:Object)
     {
         super(parent);
         this.setPosition(x, y);

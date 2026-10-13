@@ -1,5 +1,6 @@
 package funkin.backend.assets;
 
+import h2d.Bitmap;
 import hxd.res.BitmapFont;
 import sys.FileSystem;
 
@@ -9,8 +10,7 @@ import hxd.res.Sound;
 import hxd.snd.Channel;
 
 class Paths {
-    static var imageCache:Map<String, Image> = new Map();
-    static var soundCache:Map<String, Sound> = new Map();
+    public static var assetCache:AssetCache = new AssetCache();
 
     public static function getPath(key:String, ?folder:String):String {
         return (folder != null ? folder + "/" : "") + key;
@@ -18,70 +18,32 @@ class Paths {
 
     public static function image(key:String, ?ext:String = "png", ?folder:String = null):Image {
         var path = getPath('images/$key.$ext', folder);
-
-        // fallback image to prevent crashes
-        if (!FileSystem.exists('assets/$path')) {
-            trace('File ($path) not found!');
-            return Res.images.hxlogo;
-        }
-
-        if (!imageCache.exists(path))
-            imageCache.set(path, Res.load(path).toImage());
-
-        return imageCache.get(path);
+        return assetCache.getImage(path);
     }
 
     public static function music(key:String, ?ext:String = "ogg", ?folder:String = null):Channel {
         var path = getPath('music/$key.$ext', folder);
-        
-        // fallback sound to prevent crashes
-        if (!FileSystem.exists('assets/$path')) {
-            trace('File ($path) not found!');
-            return Res.sounds.metronome.play();
-        }
-
-        if (!soundCache.exists(path)) 
-            soundCache.set(path, Res.load(path).toSound());
-
-        var channel = soundCache.get(path).play();
+        var channel = assetCache.getSound(path).play();
         channel.pause = true;
         return channel;
     }
 
     public static function sound(key:String, ?ext:String = "ogg", ?folder:String = null):Sound {
         var path = getPath('sounds/$key.$ext', folder);
-
-        // fallback sound to prevent crashes
-        if (!FileSystem.exists('assets/$path')) {
-            trace('File ($path) not found!');
-            return Res.sounds.metronome;
-        }
-
-        if (!soundCache.exists(path)) 
-            soundCache.set(path, Res.load(path).toSound());
-
-        var channel = soundCache.get(path);
+        var channel = assetCache.getSound(path);
         return channel;
     }
 
     public static function inst(song:String, ?ext:String = "ogg", ?folder:String = null):Channel {
         var path = getPath('songs/$song/Inst.$ext', folder);
-
-        if (!soundCache.exists(path)) 
-            soundCache.set(path, Res.load(path).toSound());
-
-        var channel = soundCache.get(path).play();
+        var channel = assetCache.getSound(path).play();
         channel.pause = true;
         return channel;
     }
 
     public static function voices(song:String, ?suffix:String = "", ?ext:String = "ogg", ?folder:String = null):Channel {
         var path = getPath('songs/$song/Voices$suffix.$ext', folder);
-
-        if (!soundCache.exists(path)) 
-            soundCache.set(path, Res.load(path).toSound());
-
-        var channel = soundCache.get(path).play();
+        var channel = assetCache.getSound(path).play();
         channel.pause = true;
         return channel;
     }

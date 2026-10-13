@@ -11,7 +11,7 @@ class Conductor {
     public var bpm(default, set):Float;
     public function set_bpm(v:Float):Float {
         bpm = v;
-        crochet = (60 / bpm);
+        crochet = (60 / bpm) * 1000;
         stepCrochet = crochet / stepsPerBeat;
         measureCrochet = crochet * beatsPerMeasure;
 
@@ -59,7 +59,7 @@ class Conductor {
             this.songLength = song.duration;
         } else {
             this.songLength = 0;
-            trace('No song was provided to the Conductor!');
+            trace('No song was provided to the Conductor!', WARNING);
         }
 
         trace('Conductor initialized with BPM: ' + bpm);
@@ -74,7 +74,7 @@ class Conductor {
             songPosition = Math.clamp(songPosition, 0, songLength * 1000);
         }
         
-        stepFloat = (songPosition / 1000) / stepCrochet;
+        stepFloat = songPosition / stepCrochet;
         beatFloat = stepFloat / stepsPerBeat;
         measureFloat = beatFloat / beatsPerMeasure;
 

@@ -2,10 +2,7 @@ package engine.display.debug;
 
 import hxd.Timer;
 import hxd.Math;
-import hxd.res.DefaultFont;
 import h2d.RenderContext;
-import h2d.Text;
-import h2d.Object;
 
 class RAMDisplay extends Object
 {
@@ -51,6 +48,10 @@ class RAMDisplay extends Object
             // i wanna use • as the divider after i add the font lol - ev
             // i have to do a thingy to get task manager memory and i dont wanna do that rn so we just have gc memory - ev
             gcRamText.text = 'GC - [${gcMemFormatted} / ${gcPeakMemFormatted}]';
+
+            // idk if you wanna do your thing still but just so you know the stuff below also contains memory info! check it out - kaylee
+            // h3d.Engine.getCurrent().mem
+            // h3d.Engine.getCurrent().driver.getMemoryUsage()
             
             syncTime = 0;
         }
