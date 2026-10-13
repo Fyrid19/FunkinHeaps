@@ -9,7 +9,7 @@ class Sprite extends h2d.Object {
     public var animation:Dynamic = new SpriteAnimation();
     public var sBatch:h2d.SpriteBatch;
 
-    @:isVar public var bitmap(get, set):h2d.Bitmap;
+    @:isVar public var bitmap(default, set):h2d.Bitmap;
     
     public function new() {
         super();
@@ -67,8 +67,4 @@ class Sprite extends h2d.Object {
         
         return value;
     }
-
-	function get_bitmap():Bitmap {
-        return bitmap;
-	}
 }

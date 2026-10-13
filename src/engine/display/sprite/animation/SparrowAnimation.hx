@@ -187,8 +187,10 @@ class SparrowAnimation extends SpriteAnimation
             curFrame++;
         }
         
-        if (curFrame >= anims[curAnim].frames.length) {
-            if (anims[curAnim].looped) {
+        final anim = anims.get(curAnim);
+        
+        if (curFrame >= animLength) {
+            if (anim.looped) {
                 curFrame = 0;
             } else {
                 playing = false;
@@ -196,8 +198,8 @@ class SparrowAnimation extends SpriteAnimation
             }
         }
         
-        sBatchElem.t = anims.get(curAnim).frames[curFrame];  
-        sBatchElem.rotation = Math.degToRad(-90) * (anims.get(curAnim).extra.get("rotatedFrames").get(curFrame) == true ? 1 : 0);
+        sBatchElem.t = anim.frames[curFrame];  
+        sBatchElem.rotation = Math.degToRad(-90) * (anim.extra.get("rotatedFrames").get(curFrame) == true ? 1 : 0);
      
     }
     
@@ -207,7 +209,11 @@ class SparrowAnimation extends SpriteAnimation
         curAnim = name;
         curFrame = 0;
         
-        frameTime = 1 / anims.get(curAnim).fps;
+        final anim = anims.get(curAnim);
+        
+        animLength = anim.frames.length;
+        
+        frameTime = 1 / anim.fps;
         
         playing = true;
 

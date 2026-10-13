@@ -19,9 +19,6 @@ class AnimateSpritemapSprite
         this.height = height;
         this.rotated = rotated;
         this.tile = tile;
-                  
-        this.tile.setPosition(this.x, this.y);
-        this.tile.setSize(this.width, this.height);
     }
 }
 
@@ -53,20 +50,36 @@ class AnimateAnimation extends SpriteAnimation
         for (i in 0...sprites.length) {
             var sprite = sprites[i].SPRITE;
             
-            var animSpr:AnimateSpritemapSprite = new AnimateSpritemapSprite(sprite.x, sprite.y, sprite.w, sprite.h, sprite.rotated, smAtlas.toTile());
+            final atlasTile = smAtlas.toTile();
+            final animTile = atlasTile.sub(sprite.x, sprite.y, sprite.w, sprite.h).center();
+            
+            var animSpr:AnimateSpritemapSprite = new AnimateSpritemapSprite(sprite.x, sprite.y, sprite.w, sprite.h, sprite.rotated, animTile);
+            
             smSprites.set(sprite.name, animSpr);
         }
         
         loadAnimJson(path);
     }
-    
-    var timeline:AnimateTimeline;
-    
+        
     function loadAnimJson(path:String) {
         var animJson:AnimateJson.AnimationJson = Paths.json('images/$path/Animation');
         
-        timeline = new AnimateTimeline(animJson.AN.TL, this);
+        _anims = [];
         
+        animTimeline = new AnimateTimeline(animJson.AN.TL, this);
+        
+        addByFrameLabel("move", "Schmoove", 12, true);
+        playAnim("move", true);
+    }
+    
+    var _anims:Map<String, AnimateAnimationObject>;
+    
+    public function addByFrameLabel(name:String, label:String, ?framerate:Int = 24, ?looped:Bool = false) {
+        var foundFrames:Array<Int> = animTimeline.findFrameLabelIndices(label);
+        
+        var anim = new AnimateAnimationObject(this, name, foundFrames, framerate, looped);
+        anim.timeline = animTimeline;
+        _anims.set(name, anim);
     }
     
     // for readability sake - ev
@@ -90,34 +103,43 @@ class AnimateAnimation extends SpriteAnimation
     }
     
 
-    public function playAnim(name:String, ?forced:Bool = false, ?reversed:Bool = false) {
-        if (!forced && !playing) return;
-        
+    public function playAnim(name:String, ?forced:Bool = false, ?reversed:Bool = false) {        
+        if ((!forced && playing)) return;
+                
         curAnim = name;
         curFrame = 0;
         
-        var duration:Int = 0;
+        final anim = _anims.get(curAnim);
         
-        frameTime = 1 / anims.get(curAnim).fps;
+        animLength = anim.frames.length;
+                
+        frameTime = 1 / anim.framerate;
+        
+        playing = true;
     }
     
     override public function update(dt:Float) {
         super.update(dt);
-        
+                
         if (!playing) return;
-        
+                
         while (et >= frameTime) {            
             et -= frameTime;
             curFrame++;
         }
         
-        if (curFrame >= anims[curAnim].frames.length) {
-            if (anims[curAnim].looped) {
+        final anim = _anims.get(curAnim);
+        
+        if (curFrame >= animLength) {
+            if (anim.looped == true) {
                 curFrame = 0;
             } else {
+                curFrame = animLength;
                 playing = false;
-                return;
             }
         }
+        
+        animTimeline.renderFrame(anim.frames[curFrame]);
+
     }
 }
