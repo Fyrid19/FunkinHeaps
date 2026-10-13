@@ -189,7 +189,7 @@ class SparrowAnimation extends SpriteAnimation
         
         final anim = anims.get(curAnim);
         
-        if (curFrame >= anim.frames.length) {
+        if (curFrame >= animLength) {
             if (anim.looped) {
                 curFrame = 0;
             } else {
@@ -209,7 +209,11 @@ class SparrowAnimation extends SpriteAnimation
         curAnim = name;
         curFrame = 0;
         
-        frameTime = 1 / anims.get(curAnim).fps;
+        final anim = anims.get(curAnim);
+        
+        animLength = anim.frames.length;
+        
+        frameTime = 1 / anim.fps;
         
         playing = true;
 
