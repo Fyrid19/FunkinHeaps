@@ -22,6 +22,13 @@ extern typedef SpritemapMeta =
 	resolution:String
 }
 
+extern typedef TransformPointJson = 
+{
+	x:Float,
+	y:Float
+}
+
+
 extern typedef SpriteJson =
 {
 	SPRITE:
@@ -159,13 +166,41 @@ extern abstract AtlasInstanceJson(Dynamic)
 		return MatrixJson.resolve(this);
 }
 
+extern abstract SymbolInstanceJson(Dynamic)
+{
+	public var SN(get, never):String;
+	public var IN(get, never):String;
+	public var ST(get, never):String;
+	public var FF(get, never):Int;
+	public var LP(get, never):String;
+	public var TRP(get, never):TransformPointJson;
+	public var MX(get, never):MatrixJson;
+
+	inline function get_SN()
+		return this.SN ?? this.SYMBOL_name;
+	inline function get_IN()
+		return this.IN ?? this.INSTANCE_Name;
+	inline function get_ST()
+		return this.ST ?? this.symbolType;
+	inline function get_FF()
+		return this.FF ?? this.firstFrame;
+	inline function get_LP()
+		return this.LP ?? this.loop;
+	inline function get_TRP()
+		return this.TRP ?? this.transformationPoint;
+    inline function get_MX()
+		return MatrixJson.resolve(this);
+}
 
 extern abstract ElementJson(Dynamic)
 {
 	public var ASI(get, never):Null<AtlasInstanceJson>;
+	public var SI(get, never):Null<SymbolInstanceJson>;
 
 	inline function get_ASI()
 		return this.ASI ?? this.ATLAS_SPRITE_instance;
+	inline function get_SI()
+		return this.SI ?? this.SYMBOL_Instance;
 }
 
 extern abstract FrameJson(Dynamic)

@@ -17,6 +17,7 @@ class SpriteAnimation
     public var frameTime:Float = 0;
 
     public var curAnim:String = "";
+    public var animLength:Int = 0;
     public var curFrame:Int = 0;
     public var et:Float = 0;
     
