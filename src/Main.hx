@@ -16,10 +16,6 @@ enum TraceType {
 }
 
 class Main extends hxd.App {
-    public var debugDisplay:DebugDisplay; // for things like fps and memory and such
-    public var volumeTray:VolumeTray; 
-    public var volumeTime:Float = 0;
-
     public var initialState = funkin.menus.MainMenuState; // state that the game starts on
 
     var manager:Manager = Manager.get();
@@ -51,16 +47,8 @@ class Main extends hxd.App {
             Sys.println('$prefix ${infos.fileName}:${infos.lineNumber}: $v\033[0m');
         };
         
-        HeapsStateManager.game = new HeapsGame(s3d);
-        HeapsStateManager.setState(initialState);
+        HeapsStateManager.init(new HeapsGame(s3d), initialState);
         setScene(HeapsStateManager.game);
-        
-        debugDisplay = new DebugDisplay(6, 4, s2d);
-
-        volumeTray = new VolumeTray(manager, s2d);
-        volumeTray.x = s2d.width/2 - volumeTray.back.width/2;
-        volumeTray.y = 4;
-        volumeTray.alpha = 0;
 
         // trace('error', ERROR);
         // trace('warning', WARNING);
@@ -73,16 +61,10 @@ class Main extends hxd.App {
         HeapsStateManager.game.update(dt);
         super.update(dt);
 
-        if (volumeTime > 0) volumeTime -= dt;
-        volumeTray.alpha = Math.clamp(volumeTime);
-
-        if (InputController.getInput('volume_up', PRESS)) {
-            manager.masterVolume += 0.1;
-            volumeTime = 2;
-        } else if (InputController.getInput('volume_down', PRESS)) {
-            manager.masterVolume -= 0.1;
-            volumeTime = 2;
-        }
+        // debug stuff
+        if (hxd.Key.isPressed(hxd.Key.F1)) HeapsStateManager.setState(funkin.test.AnimateTestState);
+        if (hxd.Key.isPressed(hxd.Key.F2)) HeapsStateManager.setState(funkin.test.SparrowTestState);
+        if (hxd.Key.isPressed(hxd.Key.F3)) HeapsStateManager.setState(funkin.test.ConductorTestState);
 
         manager.masterVolume = Math.clamp(manager.masterVolume);
     }

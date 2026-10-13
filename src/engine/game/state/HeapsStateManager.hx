@@ -3,7 +3,13 @@ package engine.game.state;
 class HeapsStateManager
 {            
     static public var game:HeapsGame;
-        
+
+    public static function init(_game:HeapsGame, _initialState:Class<HeapsState>)
+    {
+        game = _game;
+        setState(_initialState);
+    }
+    
     static public function addState(newState:Class<HeapsState>)
     {
         var _newState:HeapsState = cast Type.createInstance(newState, []);
@@ -15,8 +21,8 @@ class HeapsStateManager
     {
         // clear the states lolol
         game.removeChildren();
-        
         addState(newState);
+        game.onStateSwitch();
     }
     
     static public function update(dt:Float)
