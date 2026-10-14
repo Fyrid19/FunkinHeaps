@@ -1,5 +1,6 @@
 package;
 
+#if !macro
 import h2d.Object;
 import h2d.Text;
 import h2d.Scene;
@@ -16,3 +17,4 @@ import engine.game.state.HeapsStateManager;
 
 import funkin.backend.music.Conductor;
 import funkin.backend.assets.Paths;
+#end

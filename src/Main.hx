@@ -1,75 +1,65 @@
 package;
 
-import hxd.snd.Manager;
-
-import engine.backend.TraceType;
 import engine.game.HeapsGame;
 
 class Main extends hxd.App {
-    public var initialState = funkin.menus.MainMenuState; // state that the game starts on
+	public var initialState = funkin.menus.MainMenuState; // state that the game starts on
 
-    var manager:Manager = Manager.get();
+	override function init() {
+		Res.initEmbed();
+		Res.initLocal();
 
-    override function init() {        
-        Res.initEmbed();
-        Res.initLocal();
-        
-        HeapsStateManager.init(new HeapsGame(s3d), initialState);
-        setScene(HeapsStateManager.game);
+		Conductor.instance.initConductor();
 
-        // trace('error', ERROR);
-        // trace('warning', WARNING);
-        // trace('log', LOG);
-        
-        // DiscordUtil.init();
-    }
+		HeapsStateManager.init(new HeapsGame(s3d), initialState);
+		setScene(HeapsStateManager.game);
 
-    override function update(dt:Float) {        
-        HeapsStateManager.game.update(dt);
-        Conductor.instance.update(dt);
-        super.update(dt);
+		// trace('error', ERROR);
+		// trace('warning', WARNING);
+		// trace('log', LOG);
 
-        // debug stuff
-        if (hxd.Key.isPressed(hxd.Key.F1)) HeapsStateManager.setState(funkin.test.AnimateTestState);
-        if (hxd.Key.isPressed(hxd.Key.F2)) HeapsStateManager.setState(funkin.test.SparrowTestState);
-        if (hxd.Key.isPressed(hxd.Key.F3)) HeapsStateManager.setState(funkin.test.ConductorTestState);
+		// DiscordUtil.init();
+	}
 
-        manager.masterVolume = Math.clamp(manager.masterVolume);
-    }
-    
-    override function dispose()
-    {
-        trace('dipose');
-        HeapsStateManager.game.dispose();
-        // DiscordUtil.shutdown();
-        super.dispose();
-    }
+	override function update(dt:Float) {
+		HeapsStateManager.game.update(dt);
+		Conductor.instance.update(dt);
+		super.update(dt);
 
-    static function main() {
-        haxe.Log.trace = onLog;
-        
-        new Main();
-    }
-    
-    static function onLog(v:Dynamic, ?infos:haxe.PosInfos) { // i like this it makes the traces pretty.. could also set up a logger system with this - kay
-        var type:TraceType = LOG;
-        var customType:String = '';
-        if (infos.customParams != null) {
-            type = cast(infos.customParams[0], TraceType);
-            customType = cast(infos.customParams[1], String) ?? "\033[32m[LOG]\033[92m";
-        }
+		// debug stuff
+		if (hxd.Key.isPressed(hxd.Key.F1)) HeapsStateManager.setState(funkin.test.AnimateTestState);
+		if (hxd.Key.isPressed(hxd.Key.F2)) HeapsStateManager.setState(funkin.test.SparrowTestState);
+		if (hxd.Key.isPressed(hxd.Key.F3)) HeapsStateManager.setState(funkin.test.ConductorTestState);
+	}
 
-        var prefix:String = switch(type) {
-            case ERROR:
-                "\033[31m[ERROR]\033[91m";
-            case WARNING:
-                "\033[33m[WARNING]\033[93m";
-            case CUSTOM:
-                customType;
-            default:
-                "\033[32m[LOG]\033[92m";
-        }
+	override function dispose() {
+		trace('dipose');
+		HeapsStateManager.game.dispose();
+		// DiscordUtil.shutdown();
+		super.dispose();
+	}
 
-        Sys.println('$prefix ${infos.fileName}:${infos.lineNumber}: $v\033[0m');
-    };
+	static function main() {
+		haxe.Log.trace = onLog;
+
+		new Main();
+	}
+
+	static function onLog(v:Dynamic, ?infos:haxe.PosInfos) { // i like this it makes the traces pretty.. could also set up a logger system with this - kay
+		var type:TraceType = LOG;
+		var customType:String = '';
+		if (infos.customParams != null) {
+			type = cast(infos.customParams[0], TraceType);
+			customType = cast(infos.customParams[1], String) ?? "\033[32m[LOG]\033[92m";
+		}
+
+		var prefix:String = switch (type) {
+			case ERROR: "\033[31m[ERROR]\033[91m";
+			case WARNING: "\033[33m[WARNING]\033[93m";
+			case CUSTOM: customType;
+			default: "\033[32m[LOG]\033[92m";
+		}
+
+		Sys.println('$prefix ${infos.fileName}:${infos.lineNumber}: $v\033[0m');
+	};
 }

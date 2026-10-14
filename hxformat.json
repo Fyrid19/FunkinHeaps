@@ -1,0 +1,45 @@
+{
+	"lineEnds": {
+		"leftCurly": "both",
+		"rightCurly": "both",
+		"objectLiteralCurly": {
+			"leftCurly": "both"
+		},
+
+        "blockCurly": {
+            "leftCurly": "after"
+        }
+	},
+
+	"indentation": {
+		"character": "tab",
+		"trailingWhitespace": true
+	},
+
+	"sameLine": {
+        "ifBody": "keep",
+        "elseBody": "keep",
+		"ifElse": "keep",
+        "forBody": "keep",
+        "whileBody": "keep",
+		"returnBody": "keep",
+
+        "expressionCase": "same",
+        "untypedBody": "same"
+	},
+	
+	"emptyLines": {
+		"importAndUsing": {
+			"betweenImportsLevel": "firstLevelPackage",
+			"beforeType": 1,
+			"beforeUsing": 1,
+			"betweenImports": 1
+		},
+
+		"maxAnywhereInFile": 1,
+		
+		"afterPackage": 1,
+		
+		"finalNewline": true
+	}
+}
