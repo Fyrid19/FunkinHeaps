@@ -1,6 +1,6 @@
 package engine.display.sprite.animation.animate;
 
-import engine.display.sprite.animation.animate.elements.AnimateAtlasElement;
+import engine.display.sprite.animation.animate.elements.*;
 using StringTools;
 
 class AnimateTimeline
@@ -12,19 +12,41 @@ class AnimateTimeline
     public var playing:Bool = false;
 
     public var layers:Array<AnimateLayer>;
+    public var symbols:Map<String, AnimateSymbol>;
     
-    public function new(timeline:AnimateJson.TimelineJson, parent:AnimateAnimation) {     
-        this.parent = parent;
+    public var symbol:AnimateSymbol = null;
+
+    public function new(?json:AnimateJson.AnimationJson, ?symbols:Map<String, AnimateSymbol>, ?parent:AnimateAnimation) {     
+        this.parent = parent ?? null;
+        
+        this.symbols = symbols ?? new Map<String, AnimateSymbol>();
         
         layers = [];
         
-        if (timeline != null) {
-            loadJson(timeline);
+        if (json != null) {            
+            if (json.SD != null) {
+                loadSymbolJson(json.SD);
+            }
+            
+            loadTimelineJson(json.AN.TL);
         }
     }
     
-    function loadJson(timeline:AnimateJson.TimelineJson) {
-        var layers:Array<AnimateJson.LayerJson> = timeline.L;
+    public function loadSymbolJson(symbol:AnimateJson.SymbolDictJson) {
+        final symbols:Array<AnimateJson.SymbolJson> = symbol.S;
+        
+        for (symbol in symbols) {
+            var _symbol:AnimateSymbol = new AnimateSymbol(this, symbol);
+            this.symbols.set(symbol.SN, _symbol);
+        }
+        
+        for (symbol in this.symbols) {
+            symbol.loadTimeline();
+        }
+    }
+    
+    public function loadTimelineJson(timeline:AnimateJson.TimelineJson) {
+        final layers:Array<AnimateJson.LayerJson> = timeline.L;
         
         for (layer in layers) {
             var _layer:AnimateLayer = new AnimateLayer(this, layer);
@@ -37,25 +59,48 @@ class AnimateTimeline
         var foundFrames:Array<Int> = [];
         var foundLabel:Bool = false;
         
-        for (layer in layers) {
-            for (frame in layer.frames) {
-                if (frame.name == label) {
-                    foundLabel = true;
-                    
-                    for (i in 0...frame.duration)
-                        foundFrames[i] = (frame.index + i);
+        if (symbol == null) {
+            for (layer in layers) {
+                for (frame in layer.frames) {
+                    if (frame.name == label) {
+                        foundLabel = true;
+                        
+                        for (i in 0...frame.duration)
+                            foundFrames[i] = (frame.index + i);
+                    }
                 }
+                
+                if (foundLabel)
+                    break; 
             }
-            
-            if (foundLabel)
-                break; 
-        }
+        } else {
+            for (layer in layers) {
+                for (frame in layer.frames) {
+                    if (frame.name == label) {
+                        foundLabel = true;
+                        
+                        for (i in 0...frame.duration)
+                            foundFrames[i] = (frame.index + i);
+                    }
+                }
+                
+                if (foundLabel)
+                    break; 
+            }}
         
         return foundFrames;
     }
     
-    public function renderFrame(frameIdx:Int) {        
+    public function renderFrame(frameIdx:Int) {
         parent.parent.sBatch.clear();
+        
+        //trace('ROOT RENDER: $frameIdx');
+        
+        _renderFrame(frameIdx);
+    }
+    
+    function _renderFrame(frameIdx:Int) {
+        //trace('TIMELINE RENDER: $frameIdx');
         
         for (layer in layers) {
             if (layer.visible == false) continue;
@@ -65,19 +110,25 @@ class AnimateTimeline
 
             for (element in frame.elements) {
                 if (element is AnimateAtlasElement) {
-                    final spr = parent.smSprites.get(element.name);
+                    var elem:AnimateAtlasElement = cast element;
                     
-                    var bElem = parent.parent.sBatch.alloc(spr.tile);
+                    var bElem = parent.parent.sBatch.alloc(elem.sprite.tile);
                     
-                    final matrix = element.matrix;
+                    bElem.x = elem.matrix.x;
+                    bElem.y = elem.matrix.y;
                     
-                    bElem.x = matrix.x;
-                    bElem.y = matrix.y;
+                    final scaleX = Math.sqrt(elem.matrix.a * elem.matrix.a + elem.matrix.b * elem.matrix.b);
+                    bElem.rotation = Math.atan2(elem.matrix.b / scaleX, elem.matrix.a / scaleX);
                     
-                    final scaleX = Math.sqrt(matrix.a * matrix.a + matrix.b * matrix.b);
-                    bElem.rotation = Math.atan2(matrix.b / scaleX, matrix.a / scaleX);
+                } 
+                if (element is AnimateSymbolElement) {
+                    var elem:AnimateSymbolElement = cast element;
+                    
+                    elem.symbol.render(0);
+                                                            
+                    //elem.symbol.timeline.renderFrame(frameIdx);
+
                 }
-                
             }
         }
     }

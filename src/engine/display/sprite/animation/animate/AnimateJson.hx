@@ -179,7 +179,7 @@ extern abstract SymbolInstanceJson(Dynamic)
 	inline function get_SN()
 		return this.SN ?? this.SYMBOL_name;
 	inline function get_IN()
-		return this.IN ?? this.INSTANCE_Name;
+		return this.IN ?? this.Instance_Name;
 	inline function get_ST()
 		return this.ST ?? this.symbolType;
 	inline function get_FF()
@@ -231,7 +231,6 @@ extern abstract LayerJson(Dynamic)
 		return this.FR ?? this.Frames;
 }
 
-
 extern abstract TimelineJson(Dynamic)
 {
 	public var L(get, never):Array<LayerJson>;
@@ -262,13 +261,37 @@ extern abstract AnimJson(Dynamic)
         return this.TL ?? this.TIMELINE;
 }
 
+
+extern abstract SymbolDictJson(Dynamic)
+{
+	public var S(get, never):Array<SymbolJson>;
+
+	inline function get_S()
+		return this.S ?? this.Symbols;
+}
+
+extern abstract SymbolJson(Dynamic)
+{
+	public var SN(get, never):String;
+	public var TL(get, never):TimelineJson;
+
+	inline function get_SN()
+		return this.SN ?? this.SYMBOL_name;
+	inline function get_TL()
+		return this.TL ?? this.TIMELINE;
+}
+
+
 extern abstract AnimationJson(Dynamic)
 {
     public var AN(get, never):AnimJson;
+	public var SD(get, never):SymbolDictJson;
     public var MD(get, never):AnimationMetaJson;
     
     inline function get_AN()
         return this.AN ?? this.ANIMATION;
+	inline function get_SD()
+        return this.SD ?? this.SYMBOL_DICTIONARY;
     inline function get_MD()
         return this.MD ?? this.metadata;
 }

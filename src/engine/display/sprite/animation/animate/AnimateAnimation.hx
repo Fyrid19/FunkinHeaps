@@ -66,11 +66,10 @@ class AnimateAnimation extends SpriteAnimation
         
         _anims = [];
         
-        animTimeline = new AnimateTimeline(animJson.AN.TL, this);
-        
-        addByFrameLabel("move", "Schmoove", 12, true);
-        playAnim("move", true);
+        animTimeline = new AnimateTimeline(animJson, null, this);
     }
+    
+//    function loadSymbolDictJson(json:AnimateJson.SymbolDictJson)
     
     var _anims:Map<String, AnimateAnimationObject>;
     
@@ -140,6 +139,9 @@ class AnimateAnimation extends SpriteAnimation
         }
         
         animTimeline.renderFrame(anim.frames[curFrame]);
-
+        
+        for (symbol in animTimeline.symbols) {
+            symbol.timeline.renderFrame(anim.frames[curFrame]);
+        }
     }
 }

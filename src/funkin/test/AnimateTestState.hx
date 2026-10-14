@@ -3,7 +3,8 @@ package funkin.test;
 class AnimateTestState extends HeapsState
 {    
 
-    var spr:Sprite;
+    var ball:Sprite;
+    var bf:Sprite;
 
     override public function new():Void
     {        
@@ -11,14 +12,25 @@ class AnimateTestState extends HeapsState
         
         var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x00FF00, hxd.Window.getInstance().width, hxd.Window.getInstance().height), this);
             
-        spr = new Sprite();
-        spr.setScale(0.9);
-        spr.x = 50;
-        spr.loadAnimate("test/Untitled-2");
-        addChild(spr);
+        ball = new Sprite();
+        ball.setScale(0.9);
+        ball.x = 500;
+        ball.y = 200;
+        //ball.loadAnimate("test/Untitled-2");
+        addChild(ball);
         
-       // spr.animation.addByLabel("moving", "Schmoove", 24, true));
-     //   spr.animation.playAnim("moving", true, false);
+        bf = new Sprite();
+        bf.setScale(0.9);
+        bf.x = 200;
+        bf.y = 200;
+        bf.loadAnimate("test/BoyFriend Assets_TA-Export");
+        addChild(bf);
+        
+        bf.animation.addByFrameLabel("idle", "Idle", 24, true);
+        bf.animation.playAnim("idle", true, false);
+        
+     //   ball.animation.addByFrameLabel("moving", "Schmoove", 16, true);
+       // ball.animation.playAnim("moving", true, false);
     }
     
     
@@ -30,6 +42,7 @@ class AnimateTestState extends HeapsState
     override public function update(dt:Float) {
         super.update(dt);
         
-        spr.animation.update(dt);
+      //  ball.animation.update(dt);
+        bf.animation.update(dt);
     }
 }

@@ -31,10 +31,10 @@ class AnimateFrame
             if (element.ASI != null) {
                 var atlas = new AnimateAtlasElement(element.ASI, this);
                 elements.push(atlas);
-            } else if (element.SI != null) {
-                trace("Symbol Elements not finshed yet lol");
-            } else {
-                trace("FINISH ADDING ELEMENT TYPES LOL");
+            }
+            if (element.SI != null) {
+                var symbol = new AnimateSymbolElement(element.SI, this);
+                elements.push(symbol);
             }
         }
     }
