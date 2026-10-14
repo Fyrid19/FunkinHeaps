@@ -11,9 +11,17 @@ class HeapsState extends h2d.Scene implements IHeapsState
         super();
     }
     
-    public function create():Void {}
+    public function create():Void {
+        Conductor.instance.onStepHit.add(stepHit);
+        Conductor.instance.onBeatHit.add(beatHit);
+        Conductor.instance.onMeasureHit.add(measureHit);
+    }
     
     public function update(dt:Float):Void {}
     
     public function destroy():Void {}
+
+    public function stepHit():Void {}
+    public function beatHit():Void {}
+    public function measureHit():Void {}
 }

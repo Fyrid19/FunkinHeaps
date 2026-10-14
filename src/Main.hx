@@ -59,6 +59,7 @@ class Main extends hxd.App {
 
     override function update(dt:Float) {        
         HeapsStateManager.game.update(dt);
+        Conductor.instance.update(dt);
         super.update(dt);
 
         // debug stuff

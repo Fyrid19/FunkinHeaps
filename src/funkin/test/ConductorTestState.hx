@@ -13,8 +13,6 @@ class ConductorTestState extends HeapsState
 
     var beatsHit:Int = 0;
 
-    public var conductor:funkin.backend.music.Conductor;
-
     public var preUpdateSignal:Signal = new Signal();
     public var postUpdateSignal:Signal = new Signal();
 
@@ -26,6 +24,8 @@ class ConductorTestState extends HeapsState
     
     override public function create():Void
     {   
+        super.create();
+        
         // bro the neon green actually burns my eyes at night :broken_heart:     
         var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x0067C7, hxd.Window.getInstance().width, hxd.Window.getInstance().height), this);
         
@@ -55,26 +55,23 @@ class ConductorTestState extends HeapsState
 
         // initialize conductor
         var songMeta = Paths.json("songs/Fresh/meta");
-        conductor = new funkin.backend.music.Conductor(songMeta.bpm, song);
-        conductor.songOffset = 0.005; // mess with this prolly, idk
-        conductor.onBeatHit.add(() -> {
-            // trace("beat hit");
-            beatSquare.setScale(1.2);
-            metronome.play();
-            beatsHit++;
-        });
+        Conductor.instance.setSong(song, songMeta.bpm, false);
+        Conductor.instance.songOffset = 60; // mess with this prolly, idk
 
         var tile = h2d.Tile.fromColor(0xFF0000, 100, 100);
         tile.dx = -50;
         tile.dy = -50;
         beatSquare = new h2d.Bitmap(tile, this);
-        
-        super.create();
+    }
+
+    override public function beatHit() {
+        beatSquare.setScale(1.2);
+        metronome.play();
+        beatsHit++;
     }
     
     override public function update(dt:Float) {
         super.update(dt);
-        conductor.update(dt);
         
         var mult = Math.lerpTime(beatSquare.scaleX, 1, 0.2, dt);
         beatSquare.setScale(mult);
@@ -84,14 +81,12 @@ class ConductorTestState extends HeapsState
         beatSquare.y = this.height / 2 - beatSquare.height / 2 + 150;
 
         if (song != null) {
-            songTime.text = "Song time: " + song.position + " / " + song.duration + " [paused: " + song.pause + "]" + " | Beats hit: " + beatsHit + " | Decstep: " + conductor.decStep;
+            songTime.text = "Song time: " + song.position + " / " + song.duration + " [paused: " + song.pause + "]" + " | Beats hit: " + beatsHit;
             songTime.x = this.width / 2 - songTime.textWidth / 2;
             songTime.y = this.height - songTime.textHeight - 40;
         }
 
-        if (conductor != null) {
-            conductorData.text = 'Offset: ${conductor.songOffset}';
-        }
+        conductorData.text = 'Offset: ${Conductor.instance.songOffset}';
 
         if (controls.MENU_UP.P) {
             trace('input');

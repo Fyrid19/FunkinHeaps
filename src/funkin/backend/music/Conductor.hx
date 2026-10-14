@@ -11,7 +11,7 @@ class Conductor {
     public var bpm(default, set):Float;
     public function set_bpm(v:Float):Float {
         bpm = v;
-        crochet = (60 / bpm) * 1000;
+        crochet = (60 / bpm);
         stepCrochet = crochet / stepsPerBeat;
         measureCrochet = crochet * beatsPerMeasure;
 
@@ -20,7 +20,7 @@ class Conductor {
         return bpm;
     }
 
-    public var songOffset:Float = 0;
+    public var songOffset:Float = 0; // in ms
     public var songPosition:Float = 0;
     public var songLength:Float = 0;
 
@@ -66,12 +66,12 @@ class Conductor {
     }
 
     public function update(dt:Float) {
-        songPosition += songOffset;
+        songPosition += songOffset / 1000;
 
         if (targetSong != null) {
-            songPosition = Math.min(targetSong.position, targetSong.duration) * 1000;
+            songPosition = Math.min(targetSong.position, targetSong.duration);
             songLength = targetSong.duration;
-            songPosition = Math.clamp(songPosition, 0, songLength * 1000);
+            songPosition = Math.clamp(songPosition, 0, songLength);
         }
         
         stepFloat = songPosition / stepCrochet;
@@ -101,6 +101,8 @@ class Conductor {
     }
 
     public function setSong(song:Channel, bpm:Float, ?autoPlay:Bool = true) {
+        if (targetSong != null) targetSong.stop();
+
         this.targetSong = song;
         this.bpm = bpm;
         this.targetSong.pause = !autoPlay;
