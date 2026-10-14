@@ -15,7 +15,6 @@ class HeapsGame extends h2d.Scene
 
     public var debugDisplay:DebugDisplay; // for things like fps and memory and such
     public var volumeTray:VolumeTray; 
-    public var volumeTime:Float = 0;
 
     public var preUpdateSignal:Signal = new Signal();
     public var postUpdateSignal:Signal = new Signal();
@@ -42,17 +41,8 @@ class HeapsGame extends h2d.Scene
         preUpdateSignal.dispatch();
         HeapsStateManager.update(dt);
         postUpdateSignal.dispatch();
-
-        if (volumeTime > 0) volumeTime -= dt;
-        volumeTray.alpha = Math.clamp(volumeTime);
-
-        if (InputController.getInput('volume_up', PRESS)) {
-            manager.masterVolume += 0.1;
-            volumeTime = 2;
-        } else if (InputController.getInput('volume_down', PRESS)) {
-            manager.masterVolume -= 0.1;
-            volumeTime = 2;
-        }
+        
+        volumeTray.update(dt);
     }
 
     public function onStateSwitch() {

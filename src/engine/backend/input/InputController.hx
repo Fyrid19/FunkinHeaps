@@ -64,8 +64,9 @@ class InputController {
         'note_up'       => [Key.W, Key.UP],
         'note_right'    => [Key.D, Key.RIGHT],
 
-        'volume_up'     => [Key.NUMPAD_ADD],
-        'volume_down'   => [Key.NUMPAD_SUB],
+        'volume_up'     => [Key.NUMPAD_ADD, Key.QWERTY_EQUALS],
+        'volume_down'   => [Key.NUMPAD_SUB, Key.QWERTY_MINUS],
+        'volume_mute'   => [Key.NUMPAD_0, Key.NUMBER_0],
 
         'confirm'       => [Key.ENTER, Key.NUMPAD_ENTER],
         'back'          => [Key.BACKSPACE],

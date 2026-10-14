@@ -1,12 +1,8 @@
 package;
 
-import hxd.Window;
 import hxd.snd.Manager;
 
 import engine.backend.TraceType;
-import engine.backend.input.InputController;
-import engine.display.VolumeTray;
-import engine.display.debug.DebugDisplay;
 import engine.game.HeapsGame;
 
 class Main extends hxd.App {
@@ -17,8 +13,6 @@ class Main extends hxd.App {
     override function init() {        
         Res.initEmbed();
         Res.initLocal();
-
-        // var oldTrace = haxe.Log.trace;
         
         HeapsStateManager.init(new HeapsGame(s3d), initialState);
         setScene(HeapsStateManager.game);
