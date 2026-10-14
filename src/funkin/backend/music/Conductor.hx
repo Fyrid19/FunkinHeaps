@@ -4,7 +4,8 @@ import engine.backend.Signal;
 import hxd.snd.Channel;
 
 class Conductor {
-    public static var instance:Conductor = new Conductor();
+    // proper singleton design - ev
+    public static final instance:Conductor = new Conductor();
 
     public var targetSong:Channel;
 
@@ -49,8 +50,10 @@ class Conductor {
     public var onMeasureHit:Signal = new Signal();
 
     public var onBpmChange:Signal = new Signal();
-
-    public function new(?initialBpm:Float = 120, ?song:Channel) {
+    
+    private function new() {}
+    
+    public function initConductor(?initialBpm:Float = 120, ?song:Channel) {
         this.bpm = initialBpm;
         this.targetSong = song;
         this.songPosition = 0;
@@ -64,7 +67,7 @@ class Conductor {
 
         trace('Conductor initialized with BPM: ' + bpm);
     }
-
+    
     public function update(dt:Float) {
         songPosition += songOffset / 1000;
 

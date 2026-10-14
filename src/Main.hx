@@ -3,49 +3,22 @@ package;
 import hxd.Window;
 import hxd.snd.Manager;
 
+import engine.backend.TraceType;
 import engine.backend.input.InputController;
-import engine.display.debug.DebugDisplay;
 import engine.display.VolumeTray;
+import engine.display.debug.DebugDisplay;
 import engine.game.HeapsGame;
-
-enum TraceType {
-    LOG;
-    ERROR;
-    WARNING;
-    CUSTOM;
-}
 
 class Main extends hxd.App {
     public var initialState = funkin.menus.MainMenuState; // state that the game starts on
 
     var manager:Manager = Manager.get();
 
-    override function init() {
+    override function init() {        
         Res.initEmbed();
         Res.initLocal();
 
         // var oldTrace = haxe.Log.trace;
-        haxe.Log.trace = function(v:Dynamic, ?infos:haxe.PosInfos) { // i like this it makes the traces pretty.. could also set up a logger system with this
-            var type:TraceType = LOG;
-            var customType:String = '';
-            if (infos.customParams != null) {
-                type = cast(infos.customParams[0], TraceType);
-                customType = cast(infos.customParams[1], String) ?? "\033[32m[LOG]\033[92m";
-            }
-
-            var prefix:String = switch(type) {
-                case ERROR:
-                    "\033[31m[ERROR]\033[91m";
-                case WARNING:
-                    "\033[33m[WARNING]\033[93m";
-                case CUSTOM:
-                    customType;
-                default:
-                    "\033[32m[LOG]\033[92m";
-            }
-
-            Sys.println('$prefix ${infos.fileName}:${infos.lineNumber}: $v\033[0m');
-        };
         
         HeapsStateManager.init(new HeapsGame(s3d), initialState);
         setScene(HeapsStateManager.game);
@@ -79,6 +52,30 @@ class Main extends hxd.App {
     }
 
     static function main() {
+        haxe.Log.trace = onLog;
+        
         new Main();
     }
+    
+    static function onLog(v:Dynamic, ?infos:haxe.PosInfos) { // i like this it makes the traces pretty.. could also set up a logger system with this - kay
+        var type:TraceType = LOG;
+        var customType:String = '';
+        if (infos.customParams != null) {
+            type = cast(infos.customParams[0], TraceType);
+            customType = cast(infos.customParams[1], String) ?? "\033[32m[LOG]\033[92m";
+        }
+
+        var prefix:String = switch(type) {
+            case ERROR:
+                "\033[31m[ERROR]\033[91m";
+            case WARNING:
+                "\033[33m[WARNING]\033[93m";
+            case CUSTOM:
+                customType;
+            default:
+                "\033[32m[LOG]\033[92m";
+        }
+
+        Sys.println('$prefix ${infos.fileName}:${infos.lineNumber}: $v\033[0m');
+    };
 }
