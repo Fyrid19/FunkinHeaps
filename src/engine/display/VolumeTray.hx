@@ -11,7 +11,7 @@ class VolumeTray extends Object {
 
     public var volumeTime:Float = 0; // the timer for it appear and then leaving
     
-    public var back:Bitmap;
+    var back:Bitmap;
     var text:Text;
 
     var volumeBar:Bitmap;
@@ -19,7 +19,7 @@ class VolumeTray extends Object {
     
     var manager:hxd.snd.Manager;
 
-    public function new(manager:hxd.snd.Manager, parent:Object) {
+    public function new(manager:hxd.snd.Manager, parent:h2d.Scene) {
         super(parent);
 
         this.manager = manager;
@@ -34,6 +34,9 @@ class VolumeTray extends Object {
         text.maxWidth = back.width;
         text.text = 'Volume: ${volume}';
         text.x = 150;
+        
+        x = parent.width/2 - back.width/2;
+        alpha = 0;
     }
     
 	override function sync(ctx:h2d.RenderContext) {

@@ -32,9 +32,6 @@ class HeapsGame extends h2d.Scene
         debugDisplay = new DebugDisplay(6, 4, this);
 
         volumeTray = new VolumeTray(manager, this);
-        volumeTray.x = this.width/2 - volumeTray.back.width/2;
-        volumeTray.y = 4;
-        volumeTray.alpha = 0;
     }
     
     public function update(dt:Float) {
