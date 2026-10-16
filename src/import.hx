@@ -7,8 +7,10 @@ import h2d.Scene;
 
 import hxd.Math;
 import hxd.Res;
+import hxd.Window;
 
-import engine.backend.TraceType; // i wish i didn't have to do this but idrk - ev
+import engine.backend.enums.*;
+import engine.backend.enums.TraceType;
 import engine.backend.util.DiscordUtil;
 import engine.backend.input.InputController;
 import engine.display.sprite.Sprite;

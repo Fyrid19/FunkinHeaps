@@ -6,65 +6,75 @@ import engine.display.sprite.animation.*;
 import engine.display.sprite.animation.animate.*;
 
 class Sprite extends h2d.Object {
-    public var animation:Dynamic = new SpriteAnimation();
-    public var sBatch:h2d.SpriteBatch;
-
-    @:isVar public var bitmap(default, set):h2d.Bitmap;
-    
-    public function new() {
-        super();
-    }
-    
-    public function loadSparrow(img:hxd.res.Image) {
-        animation = new SparrowAnimation();
-        animation.parent = this;
-        
-        animation.loadAtlas(img);
-        
-        //bitmap = new h2d.Bitmap(animation.frames[1]); // temp
-    }
-    
-    public function loadAnimate(path:String) {
-        animation = new AnimateAnimation();
-        animation.parent = this;
-        
-        animation.loadSpritemap(path);
-    }
-    
-    public function updateAnim() {
-        
-    }
-    
-    static public function fromBitmap(bitmap:h2d.Bitmap):Sprite {
-        var sprite = new Sprite();
-        sprite.bitmap = bitmap;
-        return sprite;
-    }
-    
-    static public function fromImage(image:hxd.res.Image):Sprite {
-        var sprite = new Sprite();
-        var tile = image.toTile();
-        sprite.bitmap = new h2d.Bitmap(tile);
-        return sprite;
-    }
-
-    static public function simpleBitmap(x:Float, y:Float, width:Int, height:Int, color:Int, alpha:Float, ?parent:h2d.Object):Bitmap {
-        var bmp:h2d.Bitmap = new h2d.Bitmap(h2d.Tile.fromColor(color, width, height, alpha), parent);
-        bmp.x = x;
-        bmp.y = y;
-        return bmp;
-    }
-
-    // we cant add the bitmap in the constructor, so we add it when it actually gets changed - ev
-    function set_bitmap(value:Bitmap):Bitmap {
-        bitmap = value;
-        
-        if (value != null && getChildIndex(bitmap) == -1) {
-            addChild(bitmap);
-        } else if (value == null && getChildIndex(bitmap) != -1) {
-            removeChild(bitmap);   
-        }
-        
-        return value;
-    }
+	public var animation:Dynamic = new SpriteAnimation();
+	public var sBatch:h2d.SpriteBatch;
+	
+	@:isVar public var bitmap(default, set):h2d.Bitmap;
+	
+	public function new() {
+		super();
+	}
+	
+	public function loadSparrow(img:hxd.res.Image) {
+		animation = new SparrowAnimation();
+		animation.parent = this;
+		
+		animation.loadAtlas(img);
+		
+		// bitmap = new h2d.Bitmap(animation.frames[1]); // temp
+	}
+	
+	public function loadAnimate(path:String) {
+		animation = new AnimateAnimation();
+		animation.parent = this;
+		
+		animation.loadSpritemap(path);
+	}
+	
+	public function updateAnim() {}
+	
+	public function screenCenter(?axis:Axis = XY) { // change this to get the default game size values later
+		switch (axis) {
+			case X:
+				this.x = hxd.Window.getInstance().width / 2 - this.getSize().width / 2;
+			case Y:
+				this.y = hxd.Window.getInstance().height / 2 - this.getSize().height / 2;
+			case XY:
+				this.x = hxd.Window.getInstance().width / 2 - this.getSize().width / 2;
+				this.y = hxd.Window.getInstance().height / 2 - this.getSize().height / 2;
+		}
+	}
+	
+	static public function fromBitmap(bitmap:h2d.Bitmap):Sprite {
+		var sprite = new Sprite();
+		sprite.bitmap = bitmap;
+		return sprite;
+	}
+	
+	static public function fromImage(image:hxd.res.Image):Sprite {
+		var sprite = new Sprite();
+		var tile = image.toTile();
+		sprite.bitmap = new h2d.Bitmap(tile);
+		return sprite;
+	}
+	
+	static public function simpleBitmap(x:Float, y:Float, width:Int, height:Int, color:Int, alpha:Float, ?parent:h2d.Object):Bitmap {
+		var bmp:h2d.Bitmap = new h2d.Bitmap(h2d.Tile.fromColor(color, width, height, alpha), parent);
+		bmp.x = x;
+		bmp.y = y;
+		return bmp;
+	}
+	
+	// we cant add the bitmap in the constructor, so we add it when it actually gets changed - ev
+	function set_bitmap(value:Bitmap):Bitmap {
+		bitmap = value;
+		
+		if (value != null && getChildIndex(bitmap) == -1) {
+			addChild(bitmap);
+		} else if (value == null && getChildIndex(bitmap) != -1) {
+			removeChild(bitmap);
+		}
+		
+		return value;
+	}
 }
