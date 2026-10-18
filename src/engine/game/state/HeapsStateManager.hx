@@ -1,17 +1,10 @@
 package engine.game.state;
 
-import engine.display.transitions.FadeTransition;
-import engine.display.transitions.BaseTransition;
-
 class HeapsStateManager {
 	static public var game:HeapsGame;
 	
-	static var transitionSprite:BaseTransition;
-	static var _defaultTransition:FadeTransition;
-	
 	public static function init(_game:HeapsGame, _initialState:Class<HeapsState>) {
 		game = _game;
-		_defaultTransition = new FadeTransition();
 		switchState(_initialState, false);
 	}
 	
@@ -21,36 +14,26 @@ class HeapsStateManager {
 		_newState.create();
 	}
 	
-	static public function switchState(newState:Class<HeapsState>, ?doTrans:Bool = true, ?transition:BaseTransition) {
-		// if (doTrans) {
-		// 	if (transition == null) {
-		// 		transition = _defaultTransition;
-		// 	}
-		
-		// 	game.add(transitionSprite);
-		// 	transitionSprite = transition;
-		// 	transitionSprite.transIn(() -> {
-		// 		// clear the states lolol
-		// 		game.removeChildren();
-		
-		// 		// maybe clear conductor signals here? im not sure though it might break some shit
-		
-		// 		addState(newState);
-		// 		game.onStateSwitch();
-		
-		// 		transitionSprite.transOut(() -> {
-		// 			transitionSprite.remove();
-		// 		});
-		// 	});
-		// } else {
-		// clear the states lolol
-		game.removeChildren();
-		
-		// maybe clear conductor signals here? im not sure though it might break some shit
-		
-		addState(newState);
-		game.onStateSwitch();
-		// }
+	static public function switchState(newState:Class<HeapsState>, ?doTrans:Bool = true) {
+		if (doTrans) {
+			game.transSprite.transIn(() -> {
+				// clear the states lolol
+				game.removeChildren();
+				
+				// maybe clear conductor signals here? im not sure though it might break some shit
+				
+				addState(newState);
+				game.onStateSwitch();
+			});
+		} else {
+			// clear the states lolol
+			game.removeChildren();
+			
+			// maybe clear conductor signals here? im not sure though it might break some shit
+			
+			addState(newState);
+			game.onStateSwitch();
+		}
 	}
 	
 	static public function update(dt:Float) {

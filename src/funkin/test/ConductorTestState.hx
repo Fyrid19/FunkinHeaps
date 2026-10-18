@@ -7,83 +7,85 @@ class ConductorTestState extends HeapsState {
 	var metronome:hxd.res.Sound;
 	var songTime:Text;
 	var conductorData:Text;
-
+	
 	var beatSquare:h2d.Bitmap;
-
+	
 	var beatsHit:Int = 0;
-
+	
 	public var preUpdateSignal:Signal = new Signal();
 	public var postUpdateSignal:Signal = new Signal();
-
+	
 	override public function new():Void {
 		super();
 	}
-
+	
 	override public function create():Void {
 		super.create();
-
+		
 		// bro the neon green actually burns my eyes at night :broken_heart:
 		var bg = new h2d.Bitmap(h2d.Tile.fromColor(0x0067C7, hxd.Window.getInstance().width, hxd.Window.getInstance().height), this);
-
+		
 		conductorData = new Text(hxd.res.DefaultFont.get(), this);
 		conductorData.text = "s";
 		conductorData.x = 20;
 		conductorData.y = this.height - conductorData.textHeight - 10;
-
+		
 		song = Paths.inst("Fresh");
 		metronome = Paths.sound("metronome");
-
+		
 		var playButton = new h2d.Interactive(300, 100, this);
 		playButton.backgroundColor = 0xFF414141;
 		playButton.onClick = (e) -> {
 			song.pause = !song.pause;
 		};
-
+		
 		var playButtonText = new Text(hxd.res.DefaultFont.get(), playButton);
 		playButtonText.text = "Play / Pause";
 		playButtonText.x = playButton.width / 2 - playButtonText.textWidth / 2;
 		playButtonText.y = playButton.height / 2 - playButtonText.textHeight / 2;
-
+		
 		playButton.x = this.width / 2 - playButton.width / 2;
 		playButton.y = this.height / 2 - playButton.height / 2;
-
+		
 		songTime = new Text(hxd.res.DefaultFont.get(), this);
-
+		songTime.textAlign = Align.Center;
+		songTime.maxWidth = this.width;
+		// songTime.x = this.width / 2 - songTime.textWidth / 2;
+		songTime.y = this.height - songTime.textHeight - 40;
+		
 		// initialize conductor
 		var songMeta = Paths.json("songs/Fresh/meta");
 		Conductor.instance.setSong(song, songMeta.bpm, false);
 		Conductor.instance.songOffset = 60; // mess with this prolly, idk
-
+		
 		var tile = h2d.Tile.fromColor(0xFF0000, 100, 100);
-		tile.dx = -50;
-		tile.dy = -50;
+		tile.setCenterRatio();
+		tile.center();
+		
 		beatSquare = new h2d.Bitmap(tile, this);
+		beatSquare.x = this.width / 2 - beatSquare.width / 2;
+		beatSquare.y = this.height / 2 - beatSquare.height / 2 + 150;
 	}
-
+	
 	override public function beatHit() {
 		beatSquare.setScale(1.2);
 		metronome.play();
 		beatsHit++;
 	}
-
+	
 	override public function update(dt:Float) {
 		super.update(dt);
-
+		
 		var mult = Math.lerpTime(beatSquare.scaleX, 1, 0.2, dt);
 		beatSquare.setScale(mult);
 		beatSquare.rotation += 0.01;
-
-		beatSquare.x = this.width / 2 - beatSquare.width / 2;
-		beatSquare.y = this.height / 2 - beatSquare.height / 2 + 150;
-
+		
 		if (song != null) {
 			songTime.text = "Song time: " + song.position + " / " + song.duration + " [paused: " + song.pause + "]" + " | Beats hit: " + beatsHit;
-			songTime.x = this.width / 2 - songTime.textWidth / 2;
-			songTime.y = this.height - songTime.textHeight - 40;
 		}
-
+		
 		conductorData.text = 'Offset: ${Conductor.instance.songOffset}';
-
+		
 		if (controls.MENU_UP.P) {
 			trace('input');
 		}

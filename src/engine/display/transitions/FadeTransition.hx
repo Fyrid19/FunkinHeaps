@@ -7,34 +7,19 @@ class FadeTransition extends BaseTransition {
 	
 	public function new(?color:Int = 0x000000) {
 		super();
-		fade = Sprite.simpleBitmap(0, 0, 1280, 720, color, 0, this); // change this to get the default game size values later
+		fade = Sprite.simpleBitmap(0, 0, 1280, 720, color, 1, this); // change this to get the default game size values later
+		fade.alpha = 0;
 	}
 	
-	override public function transIn(?onEnd:Void->Void, ?time:Float = 1.2) {
-		finishedTransition = false;
+	override public function update(dt:Float) {
+		super.update(dt);
 		
-		var timeLeft = time;
-		
-		while (timeLeft > 0) {
-			timeLeft -= hxd.Timer.dt;
-			fade.alpha = timeLeft / time;
+		if (isTransIn) {
+			if (!finishedTransition) fade.alpha = 1 - (timeLeft / initialTime);
+			else fade.alpha = 1;
+		} else {
+			if (!finishedTransition) fade.alpha = (timeLeft / initialTime);
+			else fade.alpha = 0;
 		}
-		
-		finishedTransition = true;
-		if (onEnd != null) onEnd();
-	}
-	
-	override public function transOut(?onEnd:Void->Void, ?time:Float = 0.8) {
-		finishedTransition = false;
-		
-		var timeLeft = time;
-		
-		while (timeLeft > 0) {
-			timeLeft -= hxd.Timer.dt;
-			fade.alpha = -(timeLeft / time);
-		}
-		
-		finishedTransition = true;
-		if (onEnd != null) onEnd();
 	}
 }
