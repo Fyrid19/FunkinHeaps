@@ -26,4 +26,8 @@ class HioG {
 	
 	static function get_windowHeight()
 		return hxd.Window.getInstance().height;
+		
+	public static function switchState(nextState:Class<MusicBeatState>, ?skipTransition:Bool = false) {
+		HeapsStateManager.switchState(nextState, skipTransition);
+	}
 }

@@ -11,7 +11,7 @@ class Main extends hxd.App {
 		
 		Conductor.instance.initConductor();
 		
-		HeapsStateManager.init(new HeapsGame(s3d), initialState);
+		HeapsStateManager.init(new HeapsGame(), initialState);
 		setScene(HeapsStateManager.game);
 		
 		// trace('error', ERROR);
@@ -27,9 +27,9 @@ class Main extends hxd.App {
 		super.update(dt);
 		
 		// debug stuff
-		if (hxd.Key.isPressed(hxd.Key.F1)) HeapsStateManager.switchState(funkin.test.AnimateTestState);
-		if (hxd.Key.isPressed(hxd.Key.F2)) HeapsStateManager.switchState(funkin.test.SparrowTestState);
-		if (hxd.Key.isPressed(hxd.Key.F3)) HeapsStateManager.switchState(funkin.test.ConductorTestState);
+		if (hxd.Key.isPressed(hxd.Key.F1)) HioG.switchState(funkin.test.AnimateTestState);
+		if (hxd.Key.isPressed(hxd.Key.F2)) HioG.switchState(funkin.test.SparrowTestState);
+		if (hxd.Key.isPressed(hxd.Key.F3)) HioG.switchState(funkin.test.ConductorTestState);
 	}
 	
 	override function dispose() {

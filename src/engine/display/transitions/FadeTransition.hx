@@ -11,12 +11,14 @@ class FadeTransition extends BaseTransition {
 		transInTime = 0.5;
 		transOutTime = 0.5;
 		
-		fade = Sprite.simpleBitmap(0, 0, HioG.width, HioG.height, color, 1, this);
+		fade = Sprite.simpleBitmap(0, 0, 1, 1, color, 1, this);
 		fade.alpha = 0;
 	}
 	
 	override public function update(dt:Float) {
 		super.update(dt);
+		
+		fade.tile.setSize(HioG.width, HioG.height);
 		
 		if (isTransIn) {
 			if (!finishedTransition) fade.alpha = 1 - (timeLeft / initialTime);

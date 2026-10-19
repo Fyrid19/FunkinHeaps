@@ -32,7 +32,7 @@ class VolumeTray extends Object {
 		text.text = 'Volume: ${volume}';
 		text.x = 150;
 		
-		x = HioG.width / 2 - back.width / 2;
+		x = parent.width / 2 - back.width / 2;
 		alpha = 0;
 	}
 	

@@ -8,30 +8,22 @@ class HeapsStateManager {
 		switchState(_initialState, true);
 	}
 	
-	static public function addState(newState:Class<MusicBeatState>) {
+	static function addState(newState:Class<MusicBeatState>) {
 		var _newState:MusicBeatState = cast Type.createInstance(newState, []);
 		game.addChild(_newState);
 		_newState.create();
 	}
 	
-	static public function switchState(newState:Class<MusicBeatState>, ?skipTransition:Bool = false) {
+	static public function switchState(nextState:Class<MusicBeatState>, ?skipTransition:Bool = false) {
 		if (!skipTransition) {
 			game.transSprite.transIn(() -> {
-				// clear the states lolol
 				game.removeChildren();
-				
-				// maybe clear conductor signals here? im not sure though it might break some shit
-				
-				addState(newState);
+				addState(nextState);
 				game.onStateSwitch();
 			});
 		} else {
-			// clear the states lolol
 			game.removeChildren();
-			
-			// maybe clear conductor signals here? im not sure though it might break some shit
-			
-			addState(newState);
+			addState(nextState);
 			game.onStateSwitch();
 			
 			game.transSprite.transOut();
