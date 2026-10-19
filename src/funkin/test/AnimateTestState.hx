@@ -12,8 +12,7 @@ class AnimateTestState extends MusicBeatState {
 		ball = new Sprite();
 		ball.setScale(0.9);
 		ball.x = 500;
-		ball.y = 200;
-		// ball.loadAnimate("test/Untitled-2");
+		ball.loadAnimate("test/Untitled-2");
 		addChild(ball);
 		
 		bf = new Sprite();
@@ -26,8 +25,8 @@ class AnimateTestState extends MusicBeatState {
 		bf.animation.addByFrameLabel("idle", "Idle", 24, true);
 		bf.animation.playAnim("idle", true, false);
 		
-		//   ball.animation.addByFrameLabel("moving", "Schmoove", 16, true);
-		// ball.animation.playAnim("moving", true, false);
+		ball.animation.addByFrameLabel("moving", "Schmoove", 16, true);
+		ball.animation.playAnim("moving", true, false);
 	}
 	
 	override public function create():Void {
@@ -37,7 +36,7 @@ class AnimateTestState extends MusicBeatState {
 	override public function update(dt:Float) {
 		super.update(dt);
 		
-		//  ball.animation.update(dt);
+		ball.animation.update(dt);
 		bf.animation.update(dt);
 	}
 }
