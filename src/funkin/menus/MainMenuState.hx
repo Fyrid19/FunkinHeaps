@@ -1,6 +1,6 @@
 package funkin.menus;
 
-class MainMenuState extends HeapsState {
+class MainMenuState extends MusicBeatState {
 	var bg:Sprite;
 	
 	override function create() {

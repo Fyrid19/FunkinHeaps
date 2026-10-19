@@ -7,7 +7,11 @@ class FadeTransition extends BaseTransition {
 	
 	public function new(?color:Int = 0x000000) {
 		super();
-		fade = Sprite.simpleBitmap(0, 0, 1280, 720, color, 1, this); // change this to get the default game size values later
+		
+		transInTime = 0.5;
+		transOutTime = 0.5;
+		
+		fade = Sprite.simpleBitmap(0, 0, HioG.width, HioG.height, color, 1, this);
 		fade.alpha = 0;
 	}
 	

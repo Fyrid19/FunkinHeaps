@@ -19,8 +19,6 @@ class HeapsGame extends h2d.Scene {
 	public var preUpdateSignal:Signal = new Signal();
 	public var postUpdateSignal:Signal = new Signal();
 	
-	var manager:Manager = Manager.get();
-	
 	public function new(s3d:h3d.scene.Scene, ?width:Int = 1280, ?height:Int = 720) {
 		super();
 		
@@ -31,7 +29,7 @@ class HeapsGame extends h2d.Scene {
 		transSprite = new FadeTransition();
 		
 		debugDisplay = new DebugDisplay(6, 4, this);
-		volumeTray = new VolumeTray(manager, this);
+		volumeTray = new VolumeTray(this);
 	}
 	
 	// definitely very flimsy, will change later

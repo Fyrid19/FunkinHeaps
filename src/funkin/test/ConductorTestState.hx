@@ -2,7 +2,7 @@ package funkin.test;
 
 import engine.backend.Signal;
 
-class ConductorTestState extends HeapsState {
+class ConductorTestState extends MusicBeatState {
 	var song:hxd.snd.Channel;
 	var metronome:hxd.res.Sound;
 	var songTime:Text;
@@ -44,14 +44,14 @@ class ConductorTestState extends HeapsState {
 		playButtonText.x = playButton.width / 2 - playButtonText.textWidth / 2;
 		playButtonText.y = playButton.height / 2 - playButtonText.textHeight / 2;
 		
-		playButton.x = this.width / 2 - playButton.width / 2;
-		playButton.y = this.height / 2 - playButton.height / 2;
+		playButton.x = HioG.width / 2 - playButton.width / 2;
+		playButton.y = HioG.height / 2 - playButton.height / 2;
 		
 		songTime = new Text(hxd.res.DefaultFont.get(), this);
 		songTime.textAlign = Align.Center;
-		songTime.maxWidth = this.width;
+		songTime.maxWidth = HioG.width;
 		// songTime.x = this.width / 2 - songTime.textWidth / 2;
-		songTime.y = this.height - songTime.textHeight - 40;
+		songTime.y = HioG.height - songTime.textHeight - 40;
 		
 		// initialize conductor
 		var songMeta = Paths.json("songs/Fresh/meta");
@@ -63,8 +63,8 @@ class ConductorTestState extends HeapsState {
 		tile.center();
 		
 		beatSquare = new h2d.Bitmap(tile, this);
-		beatSquare.x = this.width / 2 - beatSquare.width / 2;
-		beatSquare.y = this.height / 2 - beatSquare.height / 2 + 150;
+		beatSquare.x = HioG.width / 2 - beatSquare.width / 2;
+		beatSquare.y = HioG.height / 2 - beatSquare.height / 2 + 150;
 	}
 	
 	override public function beatHit() {

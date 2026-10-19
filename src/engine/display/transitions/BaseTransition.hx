@@ -8,26 +8,29 @@ class BaseTransition extends Object {
 	
 	var defaultTransTime:Float = 0.6;
 	
+	var transInTime:Null<Float>;
+	var transOutTime:Null<Float>;
+	
 	public var finishedTransition:Bool = false;
 	
 	public function new() {
 		super();
 	}
 	
-	public function transIn(?onEnd:Void->Void, ?time:Float) {
+	public function transIn(?onEnd:Void->Void) {
 		this.onEnd = onEnd;
 		
 		finishedTransition = false;
 		isTransIn = true;
-		initialTime = timeLeft = time ?? defaultTransTime;
+		initialTime = timeLeft = transInTime ?? defaultTransTime;
 	}
 	
-	public function transOut(?onEnd:Void->Void, ?time:Float) {
+	public function transOut(?onEnd:Void->Void) {
 		this.onEnd = onEnd;
 		
 		finishedTransition = false;
 		isTransIn = false;
-		initialTime = timeLeft = time ?? defaultTransTime;
+		initialTime = timeLeft = transOutTime ?? defaultTransTime;
 	}
 	
 	public function update(dt:Float) {
